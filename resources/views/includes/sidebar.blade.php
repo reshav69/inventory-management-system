@@ -52,6 +52,17 @@
                         </nav>
                     </div>
 
+                    @can()
+                        
+                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="{{ route('warehouses.index') }}">View</a>
+                            <a class="nav-link" href="{{ route('warehouses.create') }}">Add</a>
+
+                        </nav>
+                    </div>
+                    @endcan
+
 
                     @can('viewAny','\App\Models\Warehouse')
                     <a class="nav-link collapsed" href="" data-bs-toggle="collapse" data-bs-target="#collapseWarehouses" aria-expanded="false" aria-controls="collapseWarehouses">
