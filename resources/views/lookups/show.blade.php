@@ -6,20 +6,41 @@
                 <tr>
                     <th>{{ $label }}</th>
                     <td>
-                        @if($label == 'Status')
+                        @switch($label)
+                        @case('Status')
                             @if($value)
-                                <span class="badge bg-success">Active</span>
+                            <span class="badge bg-success">Active</span>
                             @else
-                                <span class="badge bg-danger">Inactive</span>
+                            <span class="badge bg-danger">Inactive</span>
                             @endif
-                        @elseif($label == 'Image' && $value)
+                        @break
+                        @case('Image')
+                            @if($value)
                             <img src="{{ asset('storage/'.$value) }}" alt="{{ $datas['Name'] }}" class="img-fluid" style="max-height:150px;">
-                        @else
-                            {!! $value ?? '-' !!}
+                            @endif
+                        @break
+                        @case('Barcode')
+                        @if($datas['Barcode'] ?? false)
+                            <svg id="barcode"></svg>
+                            <script>
+                                JsBarcode("#barcode", "{{ $datas['Barcode'] ?? '' }}", {
+                                    format: "CODE128",
+                                    width: 2,
+                                    height: 60,
+                                });
+                            </script>
                         @endif
+                        
+
+                        @break
+                        
+                        @default
+                        {!! $value ?? '-' !!}
+                        
+                        @endswitch 
                     </td>
                 </tr>
-
+                
                 @endforeach
             </tbody>
         </table>
@@ -28,9 +49,9 @@
     
 </div>
 
-@if ($datas['Barcode'])
+{{-- @if ($datas && $datas[])
 <svg id="barcode"></svg>
-
+                            
 <script>
     JsBarcode("#barcode", "{{ $datas['Barcode'] }}", {
         format: "CODE128",
@@ -38,5 +59,5 @@
         height: 60,
     });
 </script>
-    
-@endif
+<span></span>
+@endif --}}

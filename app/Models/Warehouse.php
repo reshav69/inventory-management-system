@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use App\Traits\HasCreator;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Warehouse extends Model
+class Warehouse extends BaseModel
 {
-    use SoftDeletes,HasCreator;
+    
     protected $fillable = [
         'name',
         'location',
@@ -18,4 +15,17 @@ class Warehouse extends Model
         'updated_at',
         'deleted_at'
     ];
+
+
+    public function toShowData(){
+        $data = [
+            'ID'=>$this->id,
+            'Name'=>$this->name,
+            'Status'=>$this->status,
+            'Location'=>$this->location,
+
+        ];
+        return $data;
+    }
+
 }

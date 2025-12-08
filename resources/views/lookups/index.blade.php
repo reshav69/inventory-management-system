@@ -2,12 +2,11 @@
 
 @section('content')
 <div class="p-2 overflow-scroll" >
-    {{-- <div class="d-flex justify-content-between mb-2">
+    <div class="d-flex justify-content-between mb-2">
         
-        <button class="btn btn-success btn-sm  open-modal" data-url="{{ $createUrl }}" data-title="Create {{ $title }}">+ Add New</button>
-        <a class="btn btn-warning btn-sm" href={{ ($trashPage) }} data-title="view trash">View Trash</a>
+        <a class="btn btn-success btn-sm" href="{{ route($type.'.create') }}">+ Add New</a>
         
-    </div> --}}
+    </div>
     
     <table id="dynamic-table" class="table table-bordered table-striped overflow-scroll w-100">
         <thead>
@@ -28,6 +27,7 @@
         $('#dynamic-table').DataTable({
             processing: true,
             serverSide: true,
+            
             scrollX:true,
             ajax: "{{ $dataUrl }}",
             dom: 'Bfrtip',
@@ -36,10 +36,13 @@
             },
             order: [[0, 'desc']],
             columns: [
-            @foreach ($columns as $col)
-            {data: "{{ $col['name'] }}"},
-            @endforeach
-            {data: "action", orderable:false, searchable:false}
+                @foreach ($columns as $col)
+                    {data: "{{ $col['name'] }}"},
+                @endforeach
+                {data: "action", orderable:false, searchable:false}
+            ],
+            columnDefs: [
+            { width: "200px", targets: -1 }   // last column = action
             ],
             buttons: [
             'copy', 'excel', 'csv', 'pdf', 'print'

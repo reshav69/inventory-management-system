@@ -29,6 +29,7 @@ class ProductController extends Controller
         return view('lookups.index', [
             'title' => 'View Products',
             'dataUrl'   => route('products.data'),
+            'type'   => 'products',
             'columns'   => [
                 ['name' => 'id', 'label' => 'ID'],
                 ['name' => 'name', 'label' => 'Name'],
@@ -44,8 +45,9 @@ class ProductController extends Controller
     public function data(){
         return DataTables::of(Product::query())
         ->addColumn('action', function($row){
-            return view('lookups.action', ['type'=>'products','product' => $row])->render();
+            return view('lookups.action', ['type'=>'products','model' => $row])->render();
         })
+        
         ->editColumn('status', fn($row) => $row->status? '<span class="badge bg-success">Active</span>' :
              '<span class="badge bg-danger">Inactive</span>')
         ->rawColumns(['status','action'])

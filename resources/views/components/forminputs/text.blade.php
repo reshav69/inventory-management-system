@@ -2,7 +2,7 @@
     'name',
     'label' => '',
     'type' => 'text',
-    'value' => '',
+    'value',
     'class'=>'',
 ])
 
@@ -13,7 +13,8 @@
     id="{{ $name }}"
     
     placeholder="{{ $label }}"
-    value="{{ $value ?? old($name)}}"
+    value="{{$value ??old($name)}}"
+    {{ $attributes }}
     >
     <label for="{{ $name }}">{{ $label }}</label>
 

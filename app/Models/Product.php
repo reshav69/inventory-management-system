@@ -10,10 +10,8 @@ use Illuminate\Support\Str;
 
 
 
-class Product extends Model
+class Product extends BaseModel
 {
-    public $timestamps = false;
-    use SoftDeletes,HasCreator,HasNepaliDate;
     protected static function booted()
     {
         static::creating(function ($product) {
