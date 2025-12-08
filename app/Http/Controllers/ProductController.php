@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 class ProductController extends Controller
@@ -122,22 +123,40 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         $this->authorize('update', $product);
+        try {
+            //code...
+            $data = $request->validated();
 
-        // Validation logic here...
-        
-        $product->update($request->validated());
+            if ($request->hasFile('image')) {
+                // Delete old image if exists
+                if ($product->image_path && Storage::disk('public')->exists($product->image_path)) {
+                    Storage::disk('public')->delete($product->image_path);
+                }
+    
+                $path = $request->file('image')->store('products', 'public');
+                $data['image_path'] = $path;
+            }
 
-        return back()->with('success', 'Product updated successfully.');
+            $product->update($data);
+            return back()->with('success', 'Product updated successfully.');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return back()->withErrors(['db_error','Failed to update']);
+        }
     }
 
 
     public function destroy(Product $product)
     {
         $this->authorize('delete', $product);
+        try {
+            //code...
+            $product->delete();
+            return back('lookups.index')->with('success', 'Product deleted successfully.');
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
-        $product->delete();
-
-        return back('lookups.index')->with('success', 'Product deleted successfully.');
     }
     
 }

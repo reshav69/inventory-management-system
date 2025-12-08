@@ -17,7 +17,7 @@
                             Dashboard
                         </a>
                     @endif
-                    @endauth
+                    
                     <div class="sb-sidenav-menu-heading">Interface</div>
 
                     {{-- products --}}
@@ -34,6 +34,17 @@
                             {{-- <a class="nav-link" href="layout-sidenav-light.html"></a> --}}
                         </nav>
                     </div>
+
+                    @can()
+                        
+                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="{{ route('warehouses.index') }}">View</a>
+                            <a class="nav-link" href="{{ route('warehouses.create') }}">Add</a>
+
+                        </nav>
+                    </div>
+                    @endcan
 
 
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -78,12 +89,13 @@
                     </a>
                 </div>
             </div>
-            @auth
-                
+
+            
             <div class="sb-sidenav-footer">
                 <div class="small">Logged in as:</div>
                 {{ auth()->user()->email ??'User' }}
             </div>
+
             @endauth
         </nav>
     </div>

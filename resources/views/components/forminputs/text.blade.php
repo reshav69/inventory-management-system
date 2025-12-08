@@ -7,7 +7,7 @@
 ])
 
 <div class="form-floating mb-3 {{ $class }}">
-    <input class="form-control"
+    <input class="form-control @error($name) is-invalid @enderror"
     type="{{ $type }}"
     name="{{ $name }}"
     id="{{ $name }}"

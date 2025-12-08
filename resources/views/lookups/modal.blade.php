@@ -12,8 +12,7 @@
 </div>
 @push('scripts')
 <script>
-   console.log("heri");
-    
+
     $(document).on('click', '.open-modal', function() {
         let url = $(this).data('url');
         let title = $(this).data('title') || 'Form';

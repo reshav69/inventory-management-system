@@ -15,7 +15,8 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 {{-- ckeditor --}}
-<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+<script src="{{ asset('js/ckeditor/ckeditor.js') }}"></script>
+
 
 {{-- nepalidatepicker --}}
 <script src="{{ asset('js/nepali.datepicker.v5.0.6.min.js') }}"></script>
