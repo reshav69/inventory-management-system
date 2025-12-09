@@ -19,6 +19,14 @@ Route::group(['middleware'=>'guest'], function(){
     Route::post('/login',[AuthController::class,'login']);
 });
 
+//both
+Route::middleware(['auth', 'role:admin,staff'])->group(function () {
+    Route::post('/logout',[AuthController::class,'logout'])->name('logout');
+    Route::get('products/data', [ProductController::class, 'data'])->name('products.data');
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+    
+});
 
 //admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -30,7 +38,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
 
@@ -44,14 +51,4 @@ Route::middleware(['auth', 'role:staff'])->group(function () {
     Route::get('/staff/dashboard', function () {
         return view('staff.dashboard');
     })->name('staff.dashboard');
-});
-
-
-//both
-Route::middleware(['auth', 'role:admin,staff'])->group(function () {
-    Route::post('/logout',[AuthController::class,'logout'])->name('logout');
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('products/data', [ProductController::class, 'data'])->name('products.data');
-    
-
 });

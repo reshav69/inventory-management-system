@@ -3,15 +3,19 @@
 namespace App\Models;
 
 use App\Traits\HasCreator;
+use App\Traits\HasNepaliDate;
 use Illuminate\Database\Eloquent\Model;
 
 class StockTransaction extends Model
 {
-    use HasCreator;
+    use HasCreator,HasNepaliDate;
     protected $fillable = [
+        'product_id',
+        'warehouse_id',
         'quantity',
         'transaction_type',
         'transaction_date',
+
         'created_at',
         'updated_at',
     ];

@@ -3,19 +3,20 @@
         <table class="table table-bordered">
             <tbody>
                 @foreach ($datas as $label=>$value)
+                
                 <tr>
                     <th>{{ $label }}</th>
                     <td>
                         @switch($label)
                         @case('Status')
-                            @if($value)
+                            @if($value ??false)
                             <span class="badge bg-success">Active</span>
                             @else
                             <span class="badge bg-danger">Inactive</span>
                             @endif
                         @break
                         @case('Image')
-                            @if($value)
+                            @if($value??false)
                             <img src="{{ asset('storage/'.$value) }}" alt="{{ $datas['Name'] }}" class="img-fluid" style="max-height:150px;">
                             @endif
                         @break
@@ -31,7 +32,6 @@
                             </script>
                         @endif
                         
-
                         @break
                         
                         @default
@@ -48,7 +48,10 @@
     </div>
     
 </div>
-
+<script>
+    // console.log(@json($datas));
+    
+</script>
 {{-- @if ($datas && $datas[])
 <svg id="barcode"></svg>
                             

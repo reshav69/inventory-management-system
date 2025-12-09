@@ -42,7 +42,7 @@
                 {data: "action", orderable:false, searchable:false}
             ],
             columnDefs: [
-            { width: "200px", targets: -1 }   // last column = action
+            { width: "fit", targets: -1 }   // last column = action
             ],
             buttons: [
             'copy', 'excel', 'csv', 'pdf', 'print'
