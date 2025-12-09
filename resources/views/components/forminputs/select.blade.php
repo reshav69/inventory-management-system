@@ -1,40 +1,43 @@
 @props([
     'name',
     'label' => '',
-    'class' => '',
     'options' => [],
-    'placeholder' => 'Select an option',
-    'multiple' => false,  // true for multiple select
-    'selected' => null,   // value or array of selected options
+    'placeholder',
+    'multiple' => false,
+    'selected' => null,
 ])
 
-<label for="{{ $name }}">{{ $label }}</label>
-<select 
-    name="{{ $name }}{{ $multiple ? '[]' : '' }}" 
-    id="{{ $name }}" 
-    class="form-control {{ $class }}" 
-    {{ $multiple ? 'multiple' : '' }}>
-    
-    @if(!$multiple)
-        <option value="">{{ $placeholder }}</option>
-    @endif
-
-    @foreach($options as $value => $text)
-        <option value="{{ $value }}"
-            @if($multiple && in_array($value, (array) old($name, $selected))) selected @endif
-            @if(!$multiple && old($name, $selected) == $value) selected @endif
+<div class="form-floating mb-3">
+    <select class="form-select @error($name) is-invalid @enderror"
+        name="{{ $name }}{{ $multiple ? '[]' : '' }}" 
+        id="{{ $name }}" 
+         
+        {{ $multiple ? 'multiple' : '' }}
+        {{ $attributes }}
         >
-            {{ $text }}
-        </option>
-    @endforeach
-</select>
+        
+        @if(!$multiple)
+            <option value="">{{ $placeholder ?? 'Select an option' }}</option>
+        @endif
+    
+        @foreach($options as $value => $text)
+            <option value="{{ $value }}"
+                @if($multiple && in_array($value, (array) old($name, $selected))) selected @endif
+                @if(!$multiple && old($name, $selected) == $value) selected @endif
+            >
+                {{ $text }}
+            </option>
+        @endforeach
+    </select>
+
+
+</div>
 
 @push('scripts')
 <script>
     $(document).ready(function() {
         $('#{{ $name }}').select2({
-            placeholder: '{{ $placeholder }}',
-            width: '100%'
+            width: '100%',
         });
     });
 </script>

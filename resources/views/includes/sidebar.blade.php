@@ -57,6 +57,26 @@
                     </div>
                     @endcan
 
+                    {{-- stocktransactions --}}
+
+                    <a class="nav-link collapsed" href="" data-bs-toggle="collapse" data-bs-target="#collapseStransactions" aria-expanded="false" aria-controls="collapseStransactions">
+                        <div class="sb-nav-link-icon"><i class="fas fa-arrow-trend-up"></i></div>
+                        Stock Transactions
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    
+                    <div class="collapse" id="collapseStransactions" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="{{ route('stocktransactions.index') }}">
+                                <i class="fas fa-eye"></i>&emsp;View</a>
+                            @can('create','\App\Models\StockTransaction')
+                            <a class="nav-link" href="{{ route('stocktransactions.create') }}">
+                                <i class="fas fa-plus"></i>&emsp;Add</a>
+                            @endcan
+
+                        </nav>
+                    </div>
+
 
 
 

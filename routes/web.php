@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StockTransactionController;
 use App\Http\Controllers\WarehouseController;
+use App\Models\StockTransaction;
+use Symfony\Component\HttpKernel\HttpCache\Store;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,16 +21,6 @@ Route::group(['middleware'=>'guest'], function(){
     Route::get('/login',[AuthController::class,'showLogin'])->name('login');
     Route::post('/login',[AuthController::class,'login']);
 });
-
-//both
-Route::middleware(['auth', 'role:admin,staff'])->group(function () {
-    Route::post('/logout',[AuthController::class,'logout'])->name('logout');
-    Route::get('products/data', [ProductController::class, 'data'])->name('products.data');
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-    
-});
-
 //admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
@@ -44,7 +37,24 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('warehouses/data', [WarehouseController::class, 'data'])->name('warehouses.data');
     Route::resource('warehouses',WarehouseController::class);
+
+    Route::resource('stocktransactions',StockTransactionController::class)->except('data','index','show');
 });
+
+//both
+Route::middleware(['auth', 'role:admin,staff'])->group(function () {
+    Route::post('/logout',[AuthController::class,'logout'])->name('logout');
+    Route::get('products/data', [ProductController::class, 'data'])->name('products.data');
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
+    Route::get('stocktransactions/data', [StockTransactionController::class, 'data'])->name('stocktransactions.data');
+    Route::get('/stocktransactions', [StockTransactionController::class, 'index'])->name('stocktransactions.index');
+    Route::get('/stocktransactions/{product}', [StockTransactionController::class, 'show'])->name('stocktransactions.show');
+    
+});
+
+
 //staff
 Route::middleware(['auth', 'role:staff'])->group(function () {
 

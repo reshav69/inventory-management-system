@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+
 
 class StoreStockTransactionRequest extends FormRequest
 {
@@ -25,7 +28,11 @@ class StoreStockTransactionRequest extends FormRequest
             'product_id'=>'required|exists:products,id',
             'warehouse_id'=>'required|exists:warehouses,id',
             'quantity'=>'required',
-            'transaction_type'=>'required,in:incoming,sale,transfer',
+            'transaction_type'=>
+            [
+                'required',
+                Rule::in(['incoming','sale','transfer'])
+            ],
             'transaction_date'=>'required',
 
         ];

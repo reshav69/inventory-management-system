@@ -30,6 +30,7 @@
         window.onload = function() {
             var mainInput = document.getElementById("nepali-datepicker");
             mainInput.NepaliDatePicker();
+            console.log(mainInput);
         };
     </script>
     

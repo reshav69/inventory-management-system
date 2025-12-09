@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Anuzpandey\LaravelNepaliDate\LaravelNepaliDate;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;

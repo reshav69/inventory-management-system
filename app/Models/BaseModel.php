@@ -14,6 +14,8 @@ class BaseModel extends Model{
     use SoftDeletes, HasCreator, HasNepaliDate {
         HasNepaliDate::runSoftDelete insteadof SoftDeletes;
     }
+
+    // use SoftDeletes, HasCreator, HasNepaliDate;
     protected $casts = [
         'deleted_at' => 'string',
     ];

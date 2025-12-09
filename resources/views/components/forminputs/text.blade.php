@@ -3,6 +3,7 @@
     'label' => '',
     'type' => 'text',
     'value',
+    'id',
     'class'=>'',
 ])
 
@@ -10,7 +11,7 @@
     <input class="form-control @error($name) is-invalid @enderror"
     type="{{ $type }}"
     name="{{ $name }}"
-    id="{{ $name }}"
+    id="{{ $id ??$name }}"
     
     placeholder="{{ $label }}"
     value="{{$value ??old($name)}}"

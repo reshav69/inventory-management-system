@@ -39,6 +39,20 @@ class Product extends BaseModel
         'updated_at',
         'deleted_at'
     ];
+
+    public function stock_transaction(){
+        $this->hasMany(StockTransaction::class);
+    }
+
+    public function stockTransfers()
+    {
+        return $this->hasMany(StockTransfer::class);
+    }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
     
     
     protected function generateKey(){
@@ -53,6 +67,7 @@ class Product extends BaseModel
         return $key;
         
     }
+
     
     
     protected function generateBarcode()

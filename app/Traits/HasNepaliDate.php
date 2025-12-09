@@ -37,7 +37,7 @@ trait HasNepaliDate
         $date = Carbon::now('Asia/Kathmandu');
         $englishDate = $date->toDateString();
         $time = $date->toTimeString();
-        $nepaliDate = LaravelNepaliDate::from($englishDate)->toNepaliDate(format: 'D-j-F-Y', locale: 'en');
+        $nepaliDate = LaravelNepaliDate::from($englishDate)->toNepaliDate(format: 'Y-m-d', locale: 'en');
 
         return $nepaliDate . ' ' . $time;
 

@@ -11,7 +11,7 @@
     <input 
         type="file" 
         name="{{ $name }}" 
-        id="{{ $name }}" 
+        id="{{ $name }}"    
         class="form-control @error($name) is-invalid @enderror"
         accept="{{ $accept }}"
         {{ $attributes }}
