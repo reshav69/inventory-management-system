@@ -10,8 +10,11 @@ class StockTransfer extends Model
 {
     use SoftDeletes,HasCreator;
     protected $fillable = [
+        'product_id',
         'quantity',
         'transfer_date',
+        'from_warehouse_id',
+        'to_warehouse_id',
 
         'created_at',
         'updated_at',

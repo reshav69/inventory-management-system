@@ -40,7 +40,7 @@ class Product extends BaseModel
         'deleted_at'
     ];
 
-    public function stock_transaction(){
+    public function stockTransactions(){
         $this->hasMany(StockTransaction::class);
     }
 

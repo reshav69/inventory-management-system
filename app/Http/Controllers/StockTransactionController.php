@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateStockTransactionRequest;
 use App\Models\Product;
 use App\Models\StockTransaction;
 use App\Models\Warehouse;
+use App\Services\StockTransactionService;
 use Yajra\DataTables\DataTables;
 
 
@@ -73,15 +74,20 @@ class StockTransactionController extends Controller
         return view('admin.stocktransactions.create',['products'=>$products,'warehouses'=>$warehouses]);
 
     }
-    public function store(StoreStockTransactionRequest $request){
+    public function store(StoreStockTransactionRequest $request,StockTransactionService $service){
         $this->authorize('create', StockTransaction::class);
         try {
             $data = $request->validated();
-            StockTransaction::create($data);
+            // dd($data);
+            $service->handle($data);
+            // StockTransaction::create($data);
             return back()->with('success','Added successfully');
         } catch (\Throwable $th) {
             //throw $th;
-            return back()->withErrors(['db_error'=>'Something went wrong']);
+            // $th->getMessage();
+            dd($th->getMessage());
+            // return back()->withErrors(['db_error'=>'Something went wrong']);
+            // return back()->withErrors(['db_error'=>$th->getMessage()]);
         }
 
     }

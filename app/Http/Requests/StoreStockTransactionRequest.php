@@ -25,15 +25,23 @@ class StoreStockTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id'=>'required|exists:products,id',
-            'warehouse_id'=>'required|exists:warehouses,id',
-            'quantity'=>'required',
-            'transaction_type'=>
-            [
-                'required',
-                Rule::in(['incoming','sale','transfer'])
-            ],
-            'transaction_date'=>'required',
+            'product_id' => 'required|exists:products,id',
+            'warehouse_id' => 'nullable|required_if:transaction_type,incoming,sale|exists:warehouses,id',
+            'from_warehouse_id' => 'nullable|required_if:transaction_type,transfer|exists:warehouses,id',
+            'to_warehouse_id' => 'nullable|required_if:transaction_type,transfer|exists:warehouses,id|different:from_warehouse_id',
+            'transaction_type' => 'required|in:incoming,sale,transfer',
+            'quantity' => 'required|integer|min:1',
+            'transaction_date' => 'required|string',
+
+            // 'product_id'=>'required|exists:products,id',
+            // 'warehouse_id'=>'required|exists:warehouses,id',
+            // 'quantity'=>'required',
+            // 'transaction_type'=>
+            // [
+            //     'required',
+            //     Rule::in(['incoming','sale','transfer'])
+            // ],
+            // 'transaction_date'=>'required',
 
         ];
     }
