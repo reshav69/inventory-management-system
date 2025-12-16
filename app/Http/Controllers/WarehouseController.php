@@ -17,19 +17,19 @@ class WarehouseController extends Controller
             'title' => 'View Warehouses',
             'dataUrl'   => route('warehouses.data'),
             'type'   => 'warehouses',
-            'columns'   => [
-                ['name' => 'id', 'label' => 'ID'],
-                ['name' => 'name', 'label' => 'Name'],
-                ['name' => 'status', 'label' => 'Status'],
-                ['name' => 'location', 'label' => 'Location'],
-
+            'columns'=>['Name','Status','Location'],
+            'columnsConfig'   => [
+                ['data' => 'name', 'name' => 'name'],
+                ['data' => 'status', 'name' => 'status'],
+                ['data' => 'location', 'name' => 'location'],
             ],
+
         ]);
     }
 
     public function data(){
         $this->authorize('viewAny', Warehouse::class);
-        return DataTables::of(Warehouse::query())
+        return DataTables::of(Warehouse::query())->addIndexColumn()
         ->addColumn('action', function($row){
             return view('lookups.action', ['type'=>'warehouses','model' => $row])->render();
         })

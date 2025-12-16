@@ -21,14 +21,13 @@ class StockTransactionController extends Controller
             'title' => 'View Stock Transactions',
             'dataUrl'   => route('stocktransactions.data'),
             'type'   => 'stocktransactions',
-            'columns'   => [
-                ['name' => 'id', 'label' => 'ID'],
-                ['name' => 'product', 'label' => 'Product'],
-                ['name' => 'warehouse', 'label' => 'Warehouse'],
-                ['name' => 'quantity', 'label' => 'Quantity'],
-                ['name' => 'transaction_type', 'label' => 'Transaction'],
-                ['name' => 'transaction_date', 'label' => 'Date'],
-
+            'columns'=>['Product','Warehouse','Quantity','Transaction','Date'],
+            'columnsConfig'   => [
+                ['data' => 'product', 'name' => 'product'],
+                ['data' => 'warehouse', 'name' => 'warehouse'],
+                ['data' => 'quantity', 'name' => 'quantity'],
+                ['data' => 'transaction_type', 'name' => 'transaction_type'],
+                ['data' => 'transaction_date', 'name' => 'transaction_date'],
 
             ],
         ]);
@@ -37,6 +36,7 @@ class StockTransactionController extends Controller
     public function data(){
         $this->authorize('viewAny', StockTransaction::class);
         return DataTables::of(StockTransaction::with('product','warehouse'))
+        ->addIndexColumn()
         ->addColumn('product', function ($row) {
             return $row->product_id ? $row->product->name : '-';
         })
@@ -58,8 +58,7 @@ class StockTransactionController extends Controller
         $data = [
             'ID'=>$stocktransaction->id,
             'Quantity'=>$stocktransaction->quantity,
-            'Product'=>
-            "<button class=\"open-modal\" data-title='Product' data-url=\"products/{$stocktransaction->product->id}\">{$stocktransaction->product->name} </button>",
+            'Product'=>"{$stocktransaction->product->name}",
             'Warehouse'=>$stocktransaction->warehouse->name,
             'TransactionType'=>$stocktransaction->transaction_type,
             'Transaction Date'=>$stocktransaction->transaction_date,

@@ -27,8 +27,28 @@
                 
                 <div class="col-md-6">
                     <x-forminputs.file name="image" label="Upload Image" accept="image/*" />
-                    <input type="text" value="0" name="status" hidden>
-                    <x-forminputs.checkbox name="status" label="Active" class=""/>
+
+                    <div>
+                        <div class="form-check">
+                            <input class="form-check-input @error('status') is-invalid @enderror" type="radio" name="status" id="status" value="1" checked>
+                            <label class="form-check-label" for="status">
+                              Active
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="status" id="status" value="0">
+                            <label class="form-check-label" for="status">
+                              Inactive
+                            </label>
+                        </div>
+                        @error('status')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    
+                    {{-- <input type="text" value="0" name="status" hidden> --}}
+                    {{-- <x-forminputs.checkbox name="status" label="Active" class=""/> --}}
                     
                 </div>
                 

@@ -31,20 +31,20 @@ class ProductController extends Controller
             'title' => 'View Products',
             'dataUrl'   => route('products.data'),
             'type'   => 'products',
-            'columns'   => [
-                ['name' => 'id', 'label' => 'ID'],
-                ['name' => 'name', 'label' => 'Name'],
-                ['name' => 'status', 'label' => 'Status'],
-                ['name' => 'price', 'label' => 'Price'],
-                ['name' => 'quantity', 'label' => 'Quantity'],
-                // ['name' => 'barcode', 'label' => 'Barcode'],
+            'columns'=>['Name','Status','Price','Quantity'],
+            'columnsConfig'   => [
+                ['data' => 'name', 'name' => 'name'],
+                ['data' => 'status', 'name' => 'status'],
+                ['data' => 'price', 'name' => 'price'],
+                ['data' => 'quantity', 'name' => 'quantity'],
             ],
         ]);
-        // return view('products.index', compact('products'));
+
     }
 
     public function data(){
         return DataTables::of(Product::query())
+        ->addIndexColumn()
         ->addColumn('action', function($row){
             return view('lookups.action', ['type'=>'products','model' => $row])->render();
         })
@@ -80,6 +80,7 @@ class ProductController extends Controller
 
         try {
             $data = $request->validated();
+            // dd($data);
 
             if ($request->hasFile('image')) {
                 $path = $request->file('image')->store('products', 'public');

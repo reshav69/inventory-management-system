@@ -39,8 +39,32 @@
                 @endif
 
 
+
+                <div>
+                    <div class="form-check">
+                        <input class="form-check-input @error('status') is-invalid @enderror" type="radio" name="status" id="status_active" value="1"
+                        @if ($product->status == 1)
+                        checked
+                        @endif >
+                        <label class="form-check-label" for="status_active">
+                          Active
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="status" id="status_inactive" value="0" @if ($product->status ==0)
+                        checked
+                        @endif >
+                        <label class="form-check-label" for="status_inactive">
+                          Inactive
+                        </label>
+                    </div>
+                    @error('status')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
+{{-- 
                 <input type="text" value="0" name="status" hidden>
-                <x-forminputs.checkbox name="status" label="Active" :checked="$product->status" class=""/>
+                <x-forminputs.checkbox name="status" label="Active" :checked="$product->status" class=""/> --}}
                 
             </div>
             

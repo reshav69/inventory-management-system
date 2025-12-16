@@ -5,8 +5,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockTransactionController;
+use App\Http\Controllers\StockTransferController;
 use App\Http\Controllers\WarehouseController;
 use App\Models\StockTransaction;
+
 use Symfony\Component\HttpKernel\HttpCache\Store;
 
 Route::get('/', function () {
@@ -39,6 +41,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('warehouses',WarehouseController::class);
 
     Route::resource('stocktransactions',StockTransactionController::class)->except('data','index','show');
+    Route::get('stocktransfers/data',[StockTransferController::class,'data'])->name('stocktransfers.data');
+    Route::resource('stocktransfers',StockTransferController::class)->except('create');
 });
 
 //both

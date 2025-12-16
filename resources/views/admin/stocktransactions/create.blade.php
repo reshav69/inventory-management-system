@@ -1,56 +1,121 @@
 @extends('includes.layout')
 @section('content')
     <div class="container mb-4 p-1">
-        <h1 class="text-center">Add a transaction</h1>
+        <h1 class="text-center">Create a transaction</h1>
         <hr>
+
         <form action="{{ route('stocktransactions.store') }}" method="post">
             @csrf
+
+            {{-- PRODUCT --}}
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <x-forminputs.select name="product_id" placeholder="Choose product" :options="$products"
-                    class="mb-md-0"/>
+                    <x-forminputs.select 
+                        name="product_id" 
+                        placeholder="Choose product" 
+                        :options="$products"
+                        class="mb-md-0"
+                        label="Choose product"
+                    />
                 </div>
                 
+                {{-- TRANSACTION TYPE --}}
                 <div class="col-md-6">
-                    <x-forminputs.select name="warehouse_id" placeholder="Choose warehouse" :options="$warehouses"
-                     class="mb-md-0"/>
-                    
+                    <x-forminputs.select 
+                        name="transaction_type"
+                        label="Choose transaction type"
+                        class="mb-md-0"
+                        placeholder="Choose transaction type"
+                        :options="['incoming'=>'Incoming','transfer'=>'Transfer','sale'=>'Sale']"
+                        id="transaction_type"
+                    />
                 </div>
-                
+
             </div>
 
+
+            {{-- WAREHOUSE (incoming/sale) --}}
             <div class="row mb-3">
-                <div class="col-md-6">
-                    <x-forminputs.select name="transaction_type" label="Choose transaction type" class="mb-md-0" placeholder="Choose transaction type"
-                     :options="['incoming'=>'Incoming','transfer'=>'Transfer','sale'=>'Sale']" />
-                    
+
+                <div class="col-md-6" id="warehouse_section">
+                    <x-forminputs.select 
+                    name="warehouse_id" 
+                    placeholder="Choose warehouse" 
+                    :options="$warehouses"
+                    class="mb-md-0"
+                    label="Choose Warehouse"
+                    />
                 </div>
             </div>
 
-            
+            {{-- TRANSFER: FROM WAREHOUSE --}}
+            <div class="row mb-3 d-none" id="from_warehouse_section">
+                <div class="col-md-6">
+                    <x-forminputs.select 
+                        name="from_warehouse_id" 
+                        placeholder="Choose source warehouse" 
+                        :options="$warehouses"
+                        class="mb-md-0"
+                        label="From Warehouse"
+                    />
+                </div>
+
+                {{-- TRANSFER: TO WAREHOUSE --}}
+                <div class="col-md-6 d-none" id="to_warehouse_section">
+                    <x-forminputs.select 
+                        name="to_warehouse_id" 
+                        placeholder="Choose destination warehouse" 
+                        :options="$warehouses"
+                        class="mb-md-0"
+                        label="To Warehouse"
+                    />
+                </div>
+            </div>
+
+            {{-- QUANTITY + DATE --}}
             <div class="row mb-3">
                 <div class="col-md-6">
                     <x-forminputs.text type="number" name="quantity" label="Enter quantity" class="mb-md-0"/>
                 </div>
-                
-                {{-- <div class="col-md-4">
-                    <x-forminputs.text type="number" name="price" label="Enter price" class="mb-md-0"/>
-                    
-                </div> --}}
 
                 <div class="col-md-6">
-                    <x-forminputs.text name="transaction_date" label="Choose transaction date" id="nepali-datepicker"/>
-
-                    {{-- <input type="text" placeholder="Choose date" name="transaction_date" class="form-control mb-md-0" id="nepali-datepicker"> --}}
-                    
+                    <x-forminputs.text name="transaction_date" label="Choose transaction date"
+                    id="nepali-datepicker" autocomplete="off"/>
                 </div>
-                
             </div>
-            
 
-            <button type="submit" class="btn btn-primary">Add Product</button>
+            <button type="submit" class="btn btn-primary">Create</button>
 
         </form>
 
     </div>
 @endsection
+@push('scripts')
+<script>
+    function updateFormVisibility() {
+        let type = $('#transaction_type').val();
+
+        // Hide all
+        $('#warehouse_section').addClass('d-none');
+        $('#from_warehouse_section').addClass('d-none');
+        $('#to_warehouse_section').addClass('d-none');
+
+        if (type === 'incoming' || type === 'sale') {
+            $('#warehouse_section').removeClass('d-none');
+        }
+
+        if (type === 'transfer') {
+            $('#from_warehouse_section').removeClass('d-none');
+            $('#to_warehouse_section').removeClass('d-none');
+        }
+    }
+
+    $(document).ready(function() {
+        updateFormVisibility();
+
+        $('#transaction_type').on('change', function() {
+            updateFormVisibility();
+        });
+    });
+</script>
+@endpush

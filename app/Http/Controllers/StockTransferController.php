@@ -19,16 +19,16 @@ class StockTransferController extends Controller
             'title' => 'View Stock Transfers',
             'dataUrl'   => route('stocktransfers.data'),
             'type'   => 'stocktransfers',
-            'columns'   => [
-                ['name' => 'id', 'label' => 'ID'],
-                ['name' => 'product', 'label' => 'Product'],
-                ['name' => 'From Warehouse', 'label' => 'From Warehouse'],
-                ['name' => 'To Warehouse', 'label' => 'To Warehouse'],
-                ['name' => 'quantity', 'label' => 'Quantity'],
-                ['name' => 'transfer_date', 'label' => 'Date'],
-
+            'columns'=>['Product','From Warehouse','To Warehouse','Quantity','Date'],
+            'columnsConfig'   => [
+                ['data' => 'product', 'name' => 'product'],
+                ['data' => 'from_warehouse', 'name' => 'from_warehouse'],
+                ['data' => 'to_warehouse', 'name' => 'to_warehouse'],
+                ['data' => 'quantity', 'name' => 'quantity'],
+                ['data' => 'transfer_date', 'name' => 'transfer_date'],
 
             ],
+
         ]);
     }
     public function create(){
@@ -36,17 +36,17 @@ class StockTransferController extends Controller
     }
 
     public function data(){
-        return DataTables::of(StockTransfer::query())
+        return DataTables::of(StockTransfer::query())->addIndexColumn()
         ->addColumn('action', function($row){
             return view('lookups.action', ['type'=>'stocktransfers','model' => $row])->render();
         })
         ->addColumn('product', function ($row) {
             return $row->product_id ? $row->product->name : '-';
         })
-        ->addColumn('From Warehouse', function ($row) {
+        ->addColumn('from_warehouse', function ($row) {
             return $row->from_warehouse_id ? $row->fromWarehouse->name : '-';
         })
-        ->addColumn('To Warehouse', function ($row) {
+        ->addColumn('to_warehouse', function ($row) {
             return $row->to_warehouse_id ? $row->toWarehouse->name : '-';
         })
 
@@ -60,8 +60,7 @@ class StockTransferController extends Controller
         $data = [
             'ID'=>$stocktransfer->id,
             'Quantity'=>$stocktransfer->quantity,
-            'Product'=>
-            "<button class=\"open-modal\" data-title='Product' data-url=\"products/{$stocktransfer->product->id}\">{$stocktransfer->product->name} </button>",
+            'Product'=>"{$stocktransfer->product->name}",
             'From Warehouse'=>$stocktransfer->fromWarehouse->name,
             'To Warehouse'=>$stocktransfer->toWarehouse->name,
             'Transfer Date'=>$stocktransfer->transfer_date,
