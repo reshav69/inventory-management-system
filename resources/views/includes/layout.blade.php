@@ -54,7 +54,7 @@
         });
     </script>
     @endif
-    @if($errors->has('db_error'))
+    @if($errors->any())
     <script>
         Swal.fire({
             icon: 'error',
