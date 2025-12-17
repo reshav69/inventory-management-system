@@ -4,17 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StockTransactionController;
 use App\Http\Controllers\StockTransferController;
 use App\Http\Controllers\WarehouseController;
-use App\Models\StockTransaction;
-
 use Symfony\Component\HttpKernel\HttpCache\Store;
 
 Route::get('/', function () {
     return view('welcome');
 });
-
 Route::group(['middleware'=>'guest'], function(){
 
     // Route::get('/register',[AuthController::class,'register'])->name('register');
@@ -31,6 +29,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     })->name('admin.dashboard');
 
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::get('/products/getProductCount/{product}', [ProductController::class, 'getProductCount'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
@@ -47,6 +46,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 //both
 Route::middleware(['auth', 'role:admin,staff'])->group(function () {
+Route::get('/search', [SearchController::class, 'index'])->name('search');
+
+    
     Route::post('/logout',[AuthController::class,'logout'])->name('logout');
     Route::get('products/data', [ProductController::class, 'data'])->name('products.data');
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');

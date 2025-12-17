@@ -6,6 +6,8 @@ use Anuzpandey\LaravelNepaliDate\LaravelNepaliDate;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\StockTransaction;
+use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -64,6 +66,21 @@ class ProductController extends Controller
         //     ->editColumn('updated_at', fn($row) => $row->updated_at? $row->updated_at->format('d M, Y H:i') : '')
         //     ->rawColumns(['status','action'])
         //     ->make(true);
+    }
+
+    public function getProductCount($id){
+        $product = Product::where('id',$id)->first();
+        $availableQuantity = $product->quantity;
+
+        $totalUsed = StockTransaction::where('product_id', $id)
+                            ->sum('quantity');
+        $remainingQuantity =  $availableQuantity - $totalUsed;
+
+        return response()->json([
+            'total_quantity' => $availableQuantity,
+            'remaining_quantity' => $remainingQuantity
+        ]);
+        
     }
 
     public function create()

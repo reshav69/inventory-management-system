@@ -1,21 +1,26 @@
 @extends('includes.layout')
 
 @section('content')
-@if(Auth::user()->role === 'admin' && Route::has($type.'.create'))
-    <div class="d-flex justify-content-between mb-2">
-        <a class="btn btn-success btn-sm" href="{{ route($type.'.create') }}">+ Add New</a>
-    </div>
-@endif
+
 <div class="p-2 overflow-scroll card mt-3" >
+    
+    <div class="card-header d-flex justify-content-between">
+        <div>
+            <i class="fas fa-table me-1"></i>
+            {{ ucfirst($type) }}
 
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        {{ ucfirst($type) }}
+        </div>
+        
+        @if(Auth::user()->role === 'admin' && Route::has($type.'.create'))
+        <div class="d-flex justify-content-between">
+            <a class="btn btn-success btn-sm" href="{{ route($type.'.create') }}">+ Add New</a>
+        </div>
+        @endif
     </div>
-
+    
     <div class="card-body">
-
-        <table id="dynamic-table" class="table table-bordered table-striped overflow-scroll w-100">
+        
+        <table id="dynamic-table" class="table table-bordered table-striped overflow-scroll mt-2 w-100">
             <thead>
                 <tr>
                     <th>SN</th>
@@ -25,21 +30,23 @@
                     <th>Action</th>
                 </tr>
             </thead>
+            <tbody></tbody>
         </table>
     </div>
 </div>
+<div id="export-buttons" class="card mt-5 mb-5  p-2"></div>
 
 @endsection
 @push('scripts')
 
 <script>
     $(document).ready(function() {
-        $('#dynamic-table').DataTable({
+        var table = $('#dynamic-table').DataTable({
             scrollX: true,
             processing: true,
             serverSide: true,
             ajax: '{{ $dataUrl }}',
-            dom: 'Bfrtip',
+            dom: 'Blfrtip',
             // order: [[0, 'desc']],
             xhrFields: {
                 withCredentials: true
@@ -53,9 +60,12 @@
                 { width: "fit", targets: -1 }   // last column = action
             ],
             buttons: [
+                
                 'copy', 'excel', 'csv', 'pdf', 'print'
             ],
+
         });
+        table.buttons().container().appendTo('#export-buttons');
     });
 </script>
 
