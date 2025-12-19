@@ -35,7 +35,7 @@ class SearchController extends Controller
         return response()->json($results);
         }
         catch (\Throwable $th) {
-            return response()->json([], 500);
+            return response()->json(['No Results'], 500);
         }
 
     }

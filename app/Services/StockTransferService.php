@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Product;
 use App\Models\StockTransaction;
 use App\Models\StockTransfer;
+use App\Models\WarehouseStock;
 use Illuminate\Support\Facades\DB;
 
 class StockTransferService
@@ -20,20 +21,34 @@ class StockTransferService
             $quantity = $data['quantity'];
             $transactionDate = $data['transaction_date'];
 
-            $product = Product::findOrFail($productId);
-
-            // Calculate current stock in source warehouse
-            $sourceStock = StockTransaction::where('product_id', $productId)
-                ->where('warehouse_id', $fromWarehouseId)
-                ->sum('quantity');
-            // dd($sourceStock);
-
-            if ($sourceStock < $quantity) {
-                throw new \Exception("Not enough stock in source warehouse for transfer");
+            if ($fromWarehouseId === $toWarehouseId) {
+                throw new \Exception('Source and destination warehouses must be different');
             }
 
+            // Calculate current stock in source warehouse
+            $sourceStock = WarehouseStock::where('product_id', $productId)
+            ->where('warehouse_id', $fromWarehouseId)
+            ->lockForUpdate()
+            ->first();
+
+            if (!$sourceStock || $sourceStock->quantity < $quantity) {
+                throw new \Exception('Not enough stock in source warehouse');
+            }
+
+            $sourceStock->decrement('quantity', $quantity);
+
+            WarehouseStock::updateOrCreate(
+                [
+                    'product_id' => $productId,
+                    'warehouse_id' => $toWarehouseId,
+                ],
+                [
+                    'quantity' => DB::raw("quantity + {$quantity}")
+                ]
+            );
+
             $transfer = StockTransfer::create([
-                'product_id' => $data['product_id'],
+                'product_id' => $productId,
                 'from_warehouse_id' => $fromWarehouseId,
                 'to_warehouse_id' => $toWarehouseId,
                 'quantity' => $quantity,
@@ -42,7 +57,7 @@ class StockTransferService
 
             // dd($transfer);
             StockTransaction::create([
-                'product_id' => $data['product_id'],
+                'product_id' => $productId,
 
                 'warehouse_id' => $fromWarehouseId,
                 'quantity' => -$quantity, // subtract
@@ -51,7 +66,7 @@ class StockTransferService
             ]);
 
             StockTransaction::create([
-                'product_id' => $data['product_id'],
+                'product_id' => $productId,
                 'warehouse_id' => $toWarehouseId,
                 'quantity' => $quantity, // add
                 'transaction_type' => 'transfer',

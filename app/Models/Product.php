@@ -40,6 +40,11 @@ class Product extends BaseModel
         'deleted_at'
     ];
 
+    public function warehouseStocks()
+    {
+        return $this->hasMany(WarehouseStock::class);
+    }
+
     public function stockTransactions(){
         $this->hasMany(StockTransaction::class);
     }
@@ -52,6 +57,16 @@ class Product extends BaseModel
     public function sales()
     {
         return $this->hasMany(Sale::class);
+    }
+    public function warehouses()
+    {
+        return $this->belongsToMany(Warehouse::class, 'warehouse_stock')
+                    ->withPivot('quantity');
+    }
+
+    public function getTotalStockAttribute()
+    {
+        return $this->warehouseStocks()->sum('quantity');
     }
     
     

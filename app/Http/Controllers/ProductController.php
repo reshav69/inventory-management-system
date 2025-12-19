@@ -45,43 +45,34 @@ class ProductController extends Controller
     }
 
     public function data(){
-        return DataTables::of(Product::query())
+        return DataTables::of(
+            Product::withSum('warehouseStocks as quantity', 'quantity')
+        )
         ->addIndexColumn()
-        ->addColumn('action', function($row){
-            return view('lookups.action', ['type'=>'products','model' => $row])->render();
-        })
-        
-        ->editColumn('status', fn($row) => $row->status? '<span class="badge bg-success">Active</span>' :
-             '<span class="badge bg-danger">Inactive</span>')
+        ->addColumn('quantity', fn($product) => $product->quantity ?? 0)
+        ->addColumn('action', fn($row) => view('lookups.action', ['type'=>'products','model' => $row])->render())
+        ->editColumn('status', fn($row) => $row->status
+            ? '<span class="badge bg-success">Active</span>'
+            : '<span class="badge bg-danger">Inactive</span>')
         ->rawColumns(['status','action'])
         ->make(true);
 
-        // return DataTables::of(Product::query())
-        //     ->addColumn('action', function($row){
-        //         return view('lookups.action', ['id'=>$row->id, 'type'=>'products'])->render();
-        //     })
-        //     ->addColumn('created_by',fn($row)=>$row->createdBy->name)
-        //     ->addColumn('updated_by',fn($row)=>$row->updatedBy->name ??  '-')
-        //     ->editColumn('created_at', fn($row) => $row->created_at? $row->created_at->format('d M, Y H:i') : '')
-        //     ->editColumn('updated_at', fn($row) => $row->updated_at? $row->updated_at->format('d M, Y H:i') : '')
-        //     ->rawColumns(['status','action'])
-        //     ->make(true);
     }
 
-    public function getProductCount($id){
-        $product = Product::where('id',$id)->first();
-        $availableQuantity = $product->quantity;
+    // public function getProductCount($id){
+    //     $product = Product::where('id',$id)->first();
+    //     $availableQuantity = $product->quantity;
 
-        $totalUsed = StockTransaction::where('product_id', $id)
-                            ->sum('quantity');
-        $remainingQuantity =  $availableQuantity - $totalUsed;
+    //     $totalUsed = StockTransaction::where('product_id', $id)
+    //                         ->sum('quantity');
+    //     $remainingQuantity =  $availableQuantity - $totalUsed;
 
-        return response()->json([
-            'total_quantity' => $availableQuantity,
-            'remaining_quantity' => $remainingQuantity
-        ]);
+    //     return response()->json([
+    //         'total_quantity' => $availableQuantity,
+    //         'remaining_quantity' => $remainingQuantity
+    //     ]);
         
-    }
+    // }
 
     public function create()
     {

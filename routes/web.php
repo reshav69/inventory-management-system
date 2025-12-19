@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StockTransactionController;
 use App\Http\Controllers\StockTransferController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarehouseController;
 use Symfony\Component\HttpKernel\HttpCache\Store;
 
@@ -29,7 +30,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     })->name('admin.dashboard');
 
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-    Route::get('/products/getProductCount/{product}', [ProductController::class, 'getProductCount'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
@@ -38,25 +38,29 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('warehouses/data', [WarehouseController::class, 'data'])->name('warehouses.data');
     Route::resource('warehouses',WarehouseController::class);
-
-    Route::resource('stocktransactions',StockTransactionController::class)->except('data','index','show');
-    Route::get('stocktransfers/data',[StockTransferController::class,'data'])->name('stocktransfers.data');
-    Route::resource('stocktransfers',StockTransferController::class)->except('create');
+    
+    
+    Route::get('users/data', [UserController::class, 'data'])->name('users.data');
+    Route::resource('users',UserController::class);
 });
 
 //both
 Route::middleware(['auth', 'role:admin,staff'])->group(function () {
-Route::get('/search', [SearchController::class, 'index'])->name('search');
+    Route::get('/search', [SearchController::class, 'index'])->name('search');
 
-    
     Route::post('/logout',[AuthController::class,'logout'])->name('logout');
     Route::get('products/data', [ProductController::class, 'data'])->name('products.data');
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
     Route::get('stocktransactions/data', [StockTransactionController::class, 'data'])->name('stocktransactions.data');
-    Route::get('/stocktransactions', [StockTransactionController::class, 'index'])->name('stocktransactions.index');
-    Route::get('/stocktransactions/{product}', [StockTransactionController::class, 'show'])->name('stocktransactions.show');
+    // Route::get('/stocktransactions', [StockTransactionController::class, 'index'])->name('stocktransactions.index');
+    // Route::get('/stocktransactions/{product}', [StockTransactionController::class, 'show'])->name('stocktransactions.show');
+    // Route::get('/products/getProductCount/{product}', [ProductController::class, 'getProductCount'])->name('products.getProductCount');
+
+    Route::resource('stocktransactions',StockTransactionController::class);
+    Route::get('stocktransfers/data',[StockTransferController::class,'data'])->name('stocktransfers.data');
+    Route::resource('stocktransfers',StockTransferController::class)->except('create');
     
 });
 

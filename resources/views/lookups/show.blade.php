@@ -26,8 +26,8 @@
                     <script>
                         JsBarcode("#barcode", "{{ $datas['Barcode'] ?? '' }}", {
                             format: "CODE128",
-                            width: 2,
-                            height: 60,
+                            width: 1,
+                            height: 50,
                         });
                     </script>
                     @endif

@@ -23,7 +23,7 @@
     
         @foreach($options as $value => $text)
             <option value="{{ $value }}"
-                @if($multiple && in_array($value, (array) old($name, $selected))) selected @endif
+                {{-- @if($multiple && in_array($value, (array) old($name, $selected))) selected @endif --}}
                 @if(!$multiple && old($name, $selected) == $value) selected @endif
             >
                 {{ $text }}

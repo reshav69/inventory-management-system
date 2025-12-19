@@ -1,6 +1,16 @@
+{{-- @auth
+@if(Auth::user()->role === 'admin')
+<style>
+    #sidenavAccordion {
+        background: rgb;
+
+    }
+</style>
+@endif
+@endauth --}}
 <div id="layoutSidenav">
     <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion" >
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Core</div>
@@ -32,8 +42,12 @@
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="{{ route('products.index') }}">
                                 <i class="fas fa-eye"></i> &emsp;View</a>
+
+                            @can('create','\App\Models\Product')
+                                
                             <a class="nav-link" href="{{ route('products.create') }}">
                                 <i class="fas fa-plus"></i>&emsp; Add</a> 
+                            @endcan
 
                         </nav>
                     </div>
@@ -96,6 +110,25 @@
                         </nav>
                     </div>
 
+
+                    @if(Auth::user()->role === 'admin')
+
+                    <a class="nav-link collapsed" href="" data-bs-toggle="collapse" data-bs-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                        Users
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    
+                    <div class="collapse" id="collapseUsers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="{{ route('users.index') }}">
+                                <i class="fas fa-eye"></i>&emsp;View</a>
+                            <a class="nav-link" href="{{ route('users.create') }}">
+                                <i class="fas fa-plus"></i>&emsp;Add</a>
+
+                        </nav>
+                    </div>
+                    @endif
 
 
 

@@ -27,8 +27,8 @@ return [
     ],
     [
         'label' => 'View Stock Transactions',
-        'route' => 'stocktransactions.create',
-        'policy' => ['StockTransaction', 'create'],
+        'route' => 'stocktransactions.index',
+        'policy' => ['StockTransaction', 'viewAny'],
         'keywords' => ['stocktransaction','stock','transaction', 'view', 'see','list'],
     ],
     [
@@ -39,8 +39,8 @@ return [
     ],
     [
         'label' => 'View Stock Transfers',
-        'route' => 'stocktransactions.create',
-        'policy' => ['StockTransfer', 'create'],
+        'route' => 'stocktransfers.index',
+        'policy' => ['StockTransfer', 'viewAny'],
         'keywords' => ['stock','transfer','stocktransfer', 'view', 'see','list'],
     ],
     [
@@ -49,4 +49,18 @@ return [
         'policy' => ['StockTransfer', 'create'],
         'keywords' => ['stock','transfer', 'add', 'create'],
     ],
+    
+    [
+        'label' => 'View Users',
+        'route' => 'users.index',
+        'policy' => ['User', 'viewAny'],
+        'keywords' => ['user','admin','staff', 'view', 'see','list'],
+    ],
+    [
+        'label' => 'Add Users',
+        'route' => 'users.create',
+        'policy' => ['User', 'create'],
+        'keywords' => ['user','admin','staff', 'add', 'create'],
+    ],
+    
 ];

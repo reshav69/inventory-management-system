@@ -31,6 +31,17 @@ class Warehouse extends BaseModel
         return $this->hasMany(StockTransfer::class, 'to_warehouse_id');
     }
 
+    public function warehouseStocks()
+    {
+        return $this->hasMany(WarehouseStock::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'warehouse_stock')
+                    ->withPivot('quantity');
+    }
+
     
     public function getDisplayNameAttribute()
     {

@@ -27,7 +27,7 @@
                     @foreach ($columns as $col)
                     <th>{{ $col }}</th>
                     @endforeach
-                    <th>Action</th>
+                    <th aria-controls="dynamic-table" tabindex="0">Action</th>
                 </tr>
             </thead>
             <tbody></tbody>

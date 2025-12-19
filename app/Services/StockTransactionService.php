@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Product;
 use App\Models\StockTransaction;
+use App\Models\Warehouse;
+use App\Models\WarehouseStock;
 use App\Services\StockTransferService;
 use App\Traits\HasNepaliDate;
 use Illuminate\Support\Facades\DB;
@@ -15,29 +17,29 @@ class StockTransactionService
     public function handle(array $data)
     {
         return DB::transaction(function () use ($data) {
-            $type = $data['transaction_type'];
-
-            if ($type === 'incoming') {
-                return $this->incoming($data);
-            }
-
-            if ($type === 'sale') {
-                return $this->sale($data);
-            }
-
-            if ($type === 'transfer') {
-                return app(StockTransferService::class)->transfer($data);
-            }
-
-            throw new \Exception("Invalid transaction type");
+            return match ($data['transaction_type']) {
+                'incoming' => $this->incoming($data),
+                'sale'     => $this->sale($data),
+                'transfer' => app(StockTransferService::class)->transfer($data),
+                default    => throw new \Exception('Invalid transaction type'),
+            };
         });
     }
 
     private function incoming(array $data)
     {
         $product = Product::findOrFail($data['product_id']);
-        $product->quantity -= $data['quantity'];
-        $product->save();
+        $warehouse = Warehouse::findOrFail($data['warehouse_id']);
+        $quantity =(int)$data['quantity'];
+        WarehouseStock::updateOrCreate(
+            [
+                'product_id' => $product->id,
+                'warehouse_id' => $warehouse->id,
+            ],
+            [
+                'quantity' => DB::raw("quantity + {$quantity}"),
+            ]
+        );
 
         return StockTransaction::create([
             'product_id' => $data['product_id'],

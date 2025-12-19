@@ -17,7 +17,7 @@ return new class extends Migration
             $table->longText('description');
             $table->string('key')->unique();
             $table->decimal('price',10,2);
-            $table->integer('quantity');
+            // $table->integer('quantity');
             $table->string('barcode')->unique()->nullable();
             $table->string('image_path')->nullable();
             //+6
