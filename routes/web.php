@@ -4,12 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StockTransactionController;
 use App\Http\Controllers\StockTransferController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarehouseController;
-use Symfony\Component\HttpKernel\HttpCache\Store;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,6 +50,10 @@ Route::middleware(['auth', 'role:admin,staff'])->group(function () {
     Route::get('/search', [SearchController::class, 'index'])->name('search');
 
     Route::post('/logout',[AuthController::class,'logout'])->name('logout');
+    // routes/web.php
+    Route::get('/products/{product}/warehouses', [ProductController::class, 'warehouses'])
+    ->name('products.warehouses');
+
     Route::get('products/data', [ProductController::class, 'data'])->name('products.data');
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
@@ -61,6 +66,9 @@ Route::middleware(['auth', 'role:admin,staff'])->group(function () {
     Route::resource('stocktransactions',StockTransactionController::class);
     Route::get('stocktransfers/data',[StockTransferController::class,'data'])->name('stocktransfers.data');
     Route::resource('stocktransfers',StockTransferController::class)->except('create');
+    
+    Route::get('sales/data',[SaleController::class,'data'])->name('sales.data');
+    Route::resource('sales',SaleController::class);
     
 });
 

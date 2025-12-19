@@ -7,8 +7,11 @@
             @csrf
             <x-forminputs.text name="name" label="Enter name" />
             <x-forminputs.text name="location" label="Enter location" />
-            <input type="text" value="0" name="status" hidden>
-            <x-forminputs.checkbox name="status" label="Active" class=""/>
+
+            <x-forminputs.status-radio/>
+            <hr>
+            {{-- <input type="text" value="0" name="status" hidden>
+            <x-forminputs.checkbox name="status" label="Active" class=""/> --}}
             
             <button type="submit" class="btn btn-primary">Add Warehouse</button>
 

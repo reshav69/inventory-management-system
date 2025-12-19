@@ -29,8 +29,17 @@
     <script type="text/javascript">
         window.onload = function() {
             var mainInput = document.getElementById("nepali-datepicker");
-            mainInput.NepaliDatePicker();
-            console.log(mainInput);
+
+            mainInput.NepaliDatePicker({
+                'mode':'dark',
+                'disableDaysAfter':1,
+                'animation':'slide',
+            });
+            // mainInput.disableDaysAfter(5);
+            todayFullDate= NepaliFunctions.BS.GetCurrentDate('YYYY-MM-DD');
+            mainInput.value = todayFullDate;
+
+            // console.log(NepaliFunctions.BS.GetCurrentDate());
         };
     </script>
     

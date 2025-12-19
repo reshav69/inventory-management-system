@@ -10,7 +10,7 @@
         {{-- PRODUCT --}}
         <div class="row mb-3">
             <div class="col-md-6">
-                <x-forminputs.select
+                <x-forminputs.select id="product_id"
                 name="product_id" 
                 placeholder="Choose product" 
                 :options="$products"
@@ -52,10 +52,10 @@
         {{-- TRANSFER: FROM WAREHOUSE --}}
         <div class="row mb-3 d-none" id="from_warehouse_section">
             <div class="col-md-6">
-                <x-forminputs.select 
+                <x-forminputs.select  id="from_warehouse_id"
                 name="from_warehouse_id" 
                 placeholder="Choose source warehouse" 
-                :options="$warehouses"
+                :options="[]"
                 class="mb-md-0"
                 label="From Warehouse"
                 />
@@ -145,7 +145,47 @@ $(document).ready(function() {
 
         updateFormVisibility();
     });
+
+    $('#product_id').on('change', function () {
+        let productId = $(this).val();
+        let warehouseSelect = $('#from_warehouse_id');
+
+        warehouseSelect.empty().append(
+            `<option value="">Loading warehouses...</option>`
+        );
+
+        if (!productId) {
+            warehouseSelect.html(
+                `<option value="">Choose warehouse to transfer from</option>`
+            );
+            return;
+        }
+
+        $.get(`/products/${productId}/warehouses`, function (data) {
+            warehouseSelect.empty();
+            warehouseSelect.append(
+                `<option value="">Choose warehouse to transfer from</option>`
+            );
+
+            if (data.length === 0) {
+                warehouseSelect.append(
+                    `<option value="">No stock available</option>`
+                );
+            }
+
+            data.forEach(function (warehouse) {
+                warehouseSelect.append(
+                    `<option value="${warehouse.id}">
+                        ${warehouse.name} (Stock: ${warehouse.quantity})
+                    </option>`
+                );
+            });
+
+            warehouseSelect.trigger('change');
+        });
+    });
     
 });
+
 </script>
 @endpush

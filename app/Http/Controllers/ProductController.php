@@ -59,6 +59,25 @@ class ProductController extends Controller
 
     }
 
+
+    public function warehouses(Product $product)
+    {
+        $this->authorize('viewAny', Product::class);
+        $warehouses = $product->warehouseStocks()
+            ->where('quantity', '>', 0)
+            ->with('warehouse:id,name')
+            ->get()
+            ->map(function ($stock) {
+                return [
+                    'id' => $stock->warehouse->id,
+                    'name' => $stock->warehouse->name,
+                    'quantity' => $stock->quantity,
+                ];
+            });
+
+        return response()->json($warehouses);
+    }
+
     // public function getProductCount($id){
     //     $product = Product::where('id',$id)->first();
     //     $availableQuantity = $product->quantity;
@@ -128,7 +147,7 @@ class ProductController extends Controller
     {
         $this->authorize('update', $product);
 
-        return view('products.edit', compact('product'));
+        return view('admin.products.edit', compact('product'));
     }
 
 
