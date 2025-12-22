@@ -35,7 +35,7 @@ class StockTransactionController extends Controller
     }
     public function data(){
         $this->authorize('viewAny', StockTransaction::class);
-        return DataTables::of(StockTransaction::with('product','warehouse'))
+        return DataTables::of(StockTransaction::with('product','warehouse')->orderBy('id','desc'))
         ->addIndexColumn()
         ->addColumn('product', function ($row) {
             return $row->product_id ? $row->product->name : '-';
@@ -70,7 +70,8 @@ class StockTransactionController extends Controller
     public function create(){
         $products = Product::where('status',1)->pluck('name','id');
         $warehouses = Warehouse::where('status',1)->pluck('name','id');
-        return view('admin.stocktransactions.create',['products'=>$products,'warehouses'=>$warehouses]);
+        $title= "Create Stock Transaction";
+        return view('admin.stocktransactions.create',['products'=>$products,'warehouses'=>$warehouses,'title'=>$title]);
 
     }
     public function store(StoreStockTransactionRequest $request,StockTransactionService $service){
@@ -82,10 +83,8 @@ class StockTransactionController extends Controller
             // StockTransaction::create($data);
             return back()->with('success','Added successfully');
         } catch (\Throwable $th) {
-            //throw $th;
-            // $th->getMessage();
-            dd($th->getMessage());
-            // return back()->withErrors(['db_error'=>'Something went wrong']);
+            
+            return back()->withErrors(['db_error'=>'Something went wrong'])->withInput();
             // return back()->withErrors(['db_error'=>$th->getMessage()]);
         }
 
@@ -101,6 +100,16 @@ class StockTransactionController extends Controller
     }
 
     public function destroy(StockTransaction $stocktransaction){
+        try
+        {
+
+            $stocktransaction->delete();
+            return back()->with('success', 'Delete success.');
+        }
+        catch(\Throwable $th){
+            return back()->withErrors(['db_error'=>'Could not delete a file']);
+        }
+
 
     }
 }

@@ -94,22 +94,7 @@ class Product extends BaseModel
         return $barcode;
     }
 
-    public function toShowData(){
-        $data = [
-            'ID'=>$this->id,
-            'Name'=>$this->name,
-            'Status'=>$this->status,
-            'Description'=>$this->description,
-            'Image'=>$this->image_path,
-            'Barcode'=>$this->barcode,
-            'Created_by'=>$this->createdBy->email,
-            'Created_at'=>$this->created_at,
-            'Updated_at'=>$this->updated_at,
-            'Updated_by'=>$this->updatedBy->email ?? '-',
 
-        ];
-        return $data;
-    }
 
 
 }

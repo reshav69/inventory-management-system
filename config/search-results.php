@@ -13,6 +13,7 @@ return [
         'policy' => ['Product', 'viewAny'],
         'keywords' => ['product', 'list', 'view','see'],
     ],
+    // --
     [
         'label' => 'Add Warehouse',
         'route' => 'warehouses.create',
@@ -25,6 +26,7 @@ return [
         'policy' => ['Warehouse', 'create'],
         'keywords' => ['warehouse', 'view', 'see','list'],
     ],
+    /////
     [
         'label' => 'View Stock Transactions',
         'route' => 'stocktransactions.index',
@@ -37,6 +39,7 @@ return [
         'policy' => ['StockTransaction', 'create'],
         'keywords' => ['stocktransaction','stock','transaction', 'add', 'create'],
     ],
+    /////
     [
         'label' => 'View Stock Transfers',
         'route' => 'stocktransfers.index',
@@ -49,7 +52,7 @@ return [
         'policy' => ['StockTransfer', 'create'],
         'keywords' => ['stock','transfer', 'add', 'create'],
     ],
-    
+    /////
     [
         'label' => 'View Users',
         'route' => 'users.index',
@@ -61,6 +64,19 @@ return [
         'route' => 'users.create',
         'policy' => ['User', 'create'],
         'keywords' => ['user','admin','staff', 'add', 'create'],
+    ],
+    /////
+    [
+        'label' => 'View Sales',
+        'route' => 'sales.index',
+        'policy' => ['Sale', 'viewAny'],
+        'keywords' => ['sales','sell', 'view', 'see','list'],
+    ],
+    [
+        'label' => 'Add Sales',
+        'route' => 'sales.create',
+        'policy' => ['Sale', 'create'],
+        'keywords' => ['sales','sell', 'add', 'create'],
     ],
     
 ];

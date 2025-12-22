@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSaleRequest;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\Warehouse;
+use App\Services\SaleService;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -35,6 +37,9 @@ class SaleController extends Controller
         ->addColumn('product', function ($row) {
             return $row->product_id ? $row->product->name : '-';
         })
+        ->addColumn('price', function ($row) {
+            return $row->product_id ? $row->product->price : '-';
+        })
         ->addColumn('warehouse', function ($row) {
             return $row->warehouse ? $row->warehouse->name : '-';
         })
@@ -54,11 +59,14 @@ class SaleController extends Controller
 
         return view('sales.create',['products'=>$products]);
     }
-    public function store(StoreSaleRequest $request){
+    public function store(StoreSaleRequest $request, SaleService $saleService){
         $this->authorize('create', Sale::class);
         try {
-            //code...
+            $saleService->create_sale($request->validated());
+            return redirect()->back()->with('success','Sale Created successfully');
+
         } catch (\Throwable $th) {
+            return back()->withErrors(['db_error' => $e->getMessage()])->withInput();
             //throw $th;
         }
     }

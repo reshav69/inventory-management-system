@@ -8,8 +8,9 @@
             @method('PATCH')
             <x-forminputs.text name="name" label="Enter name" :value="$warehouse->name"/>
             <x-forminputs.text name="location" label="Enter location" :value="$warehouse->location"/>
-            <input type="text" value="0" name="status" hidden>
-            <x-forminputs.checkbox name="status" label="Active" :checked="$warehouse->status" />
+
+            <x-forminputs.status-radio />
+            <hr>
             
             <button type="submit" class="btn btn-primary">Update Warehouse</button>
 

@@ -1,6 +1,6 @@
 <div class="container d-flex justify-content-end gap-2 w-fit">
 
-    <button class="btn btn-sm btn-info open-modal" data-url="{{ route($type.'.show', $model->id) }}" data-title="Data of {{ ucfirst($model->name) }}">
+    <button class="btn btn-sm btn-info open-modal" data-url="{{ route($type.'.show', $model->id) }}" data-title="{{ ucfirst($model->name) }}">
         Show
     </button>
     @can('update',$model)

@@ -47,7 +47,7 @@
             serverSide: true,
             ajax: '{{ $dataUrl }}',
             dom: 'Blfrtip',
-            // order: [[0, 'desc']],
+            order: [[0, 'asc']],
             xhrFields: {
                 withCredentials: true
             },
@@ -57,7 +57,7 @@
                 { data: 'action', orderable: false, searchable: false },
             ],
             columnDefs: [
-                { width: "fit", targets: -1 }   // last column = action
+                { width: "fit", targets: -1 }
             ],
             buttons: [
                 

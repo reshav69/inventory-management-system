@@ -26,23 +26,38 @@ class StoreStockTransactionRequest extends FormRequest
     {
         return [
             'product_id' => 'required|exists:products,id',
-            'warehouse_id' => 'nullable|required_if:transaction_type,incoming,sale|exists:warehouses,id',
+            'warehouse_id' => 'nullable|required_if:transaction_type,incoming|exists:warehouses,id',
             'from_warehouse_id' => 'nullable|required_if:transaction_type,transfer|exists:warehouses,id',
             'to_warehouse_id' => 'nullable|required_if:transaction_type,transfer|exists:warehouses,id|different:from_warehouse_id',
-            'transaction_type' => 'required|in:incoming,sale,transfer',
+            'transaction_type' => 'required|in:incoming,transfer',
             'quantity' => 'required|integer|min:1',
             'transaction_date' => 'required|string',
 
-            // 'product_id'=>'required|exists:products,id',
-            // 'warehouse_id'=>'required|exists:warehouses,id',
-            // 'quantity'=>'required',
-            // 'transaction_type'=>
-            // [
-            //     'required',
-            //     Rule::in(['incoming','sale','transfer'])
-            // ],
-            // 'transaction_date'=>'required',
-
         ];
+    }
+    public function messages()
+    {
+        return[
+            'to_warehouse_id.different'=>'The selected warehouse must be different than sourcewarehouse',
+        ];
+    }
+
+    public function withValidator($validator){
+        $validator->after(function ($validator) {
+            $productId = $this->input('product_id');
+            $warehouseId = $this->input('from_warehouse_id');
+            $quantity = $this->input('quantity');
+
+            if ($productId && $warehouseId && $quantity) {
+                $stockExists = \App\Models\WarehouseStock::where('product_id', $productId)
+                    ->where('warehouse_id', $warehouseId)
+                    ->where('quantity', '>=', $quantity)
+                    ->exists();
+
+                if (! $stockExists) {
+                    $validator->errors()->add('from_warehouse_id', 'Selected warehouse does not have enough stock for this product.');
+                }
+            }
+        });
     }
 }

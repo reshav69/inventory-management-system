@@ -50,10 +50,10 @@ Route::middleware(['auth', 'role:admin,staff'])->group(function () {
     Route::get('/search', [SearchController::class, 'index'])->name('search');
 
     Route::post('/logout',[AuthController::class,'logout'])->name('logout');
-    // routes/web.php
+
+
     Route::get('/products/{product}/warehouses', [ProductController::class, 'warehouses'])
     ->name('products.warehouses');
-
     Route::get('products/data', [ProductController::class, 'data'])->name('products.data');
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');

@@ -46,7 +46,7 @@ class ProductController extends Controller
 
     public function data(){
         return DataTables::of(
-            Product::withSum('warehouseStocks as quantity', 'quantity')
+            Product::withSum('warehouseStocks as quantity', 'quantity')->orderBy('id','desc')
         )
         ->addIndexColumn()
         ->addColumn('quantity', fn($product) => $product->quantity ?? 0)
@@ -133,8 +133,21 @@ class ProductController extends Controller
     {
         // 2. Policy Check: view
         $this->authorize('view', $product);
+        $data = [
+            'ID'=>$product->id,
+            'Name'=>$product->name,
+            'Status'=>$product->status,
+            'Description'=>$product->description,
+            'Image'=>$product->image_path,
+            'Barcode'=>$product->barcode,
+            'Created_by'=>$product->createdBy->email,
+            'Created_at'=>$product->created_at,
+            'Updated_at'=>$product->updated_at,
+            'Updated_by'=>$product->updatedBy->email ?? '-',
 
-        return view('lookups.show', ['datas'=>$product->toShowData()]);
+        ];
+
+        return view('lookups.show', ['datas'=>$data]);
 
         // return view('lookups.show', compact('product'));
     }

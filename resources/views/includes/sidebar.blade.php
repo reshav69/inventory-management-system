@@ -30,170 +30,24 @@
                     
                     <div class="sb-sidenav-menu-heading">Interface</div>
 
-                    {{-- products --}}
 
-                    <a class="nav-link collapsed" href="" data-bs-toggle="collapse" data-bs-target="#collapseProducts" aria-expanded="false" aria-controls="collapseProducts">
-                        <div class="sb-nav-link-icon"><i class="fas fa-boxes-stacked"></i></div>
-                        Products
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                        
-                    <div class="collapse" id="collapseProducts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('products.index') }}">
-                                <i class="fas fa-eye"></i> &emsp;View</a>
-
-                            @can('create','\App\Models\Product')
-                                
-                            <a class="nav-link" href="{{ route('products.create') }}">
-                                <i class="fas fa-plus"></i>&emsp; Add</a> 
-                            @endcan
-
-                        </nav>
-                    </div>
-
-                    @can()
-                        
-                    <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('warehouses.index') }}">View</a>
-                            <a class="nav-link" href="{{ route('warehouses.create') }}">Add</a>
-
-                        </nav>
-                    </div>
-                    @endcan
-
-
+                    <x-sidebars.collapser title="Products" name="Product" route="products" icon="boxes-stacked" :canCreate="true" model="\App\Models\Product"/>
                     @can('viewAny','\App\Models\Warehouse')
-                    <a class="nav-link collapsed" href="" data-bs-toggle="collapse" data-bs-target="#collapseWarehouses" aria-expanded="false" aria-controls="collapseWarehouses">
-                        <div class="sb-nav-link-icon"><i class="fas fa-house"></i></div>
-                        Warehouses
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                        
-                    <div class="collapse" id="collapseWarehouses" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('warehouses.index') }}">
-                                <i class="fas fa-eye"></i>&emsp;View</a>
-                            <a class="nav-link" href="{{ route('warehouses.create') }}">
-                                <i class="fas fa-plus"></i>&emsp;Add</a>
+                    <x-sidebars.collapser title="Warehouses" name="Warehouse" route="warehouses" icon="house" :canCreate="true" model="\App\Models\Warehouse"/>
 
-                        </nav>
-                    </div>
                     @endcan
 
-                    {{-- stocktransactions --}}
-
-                    <a class="nav-link collapsed" href="" data-bs-toggle="collapse" data-bs-target="#collapseStransactions" aria-expanded="false" aria-controls="collapseStransactions">
-                        <div class="sb-nav-link-icon"><i class="fas fa-arrow-trend-up"></i></div>
-                        Stock Transactions
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
+                    <x-sidebars.collapser title="Stock Transactions" route="stocktransactions" name="Stransactions" icon="arrow-trend-up" :canCreate="true" model="\App\Models\StockTransaction"/>
                     
-                    <div class="collapse" id="collapseStransactions" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('stocktransactions.index') }}">
-                                <i class="fas fa-eye"></i>&emsp;View</a>
-                            @can('create','\App\Models\StockTransaction')
-                            <a class="nav-link" href="{{ route('stocktransactions.create') }}">
-                                <i class="fas fa-plus"></i>&emsp;Add</a>
-                            @endcan
-
-                        </nav>
-                    </div>
-
-
-                    <a class="nav-link collapsed" href="" data-bs-toggle="collapse" data-bs-target="#collapseStransfers" aria-expanded="false" aria-controls="collapseStransfers">
-                        <div class="sb-nav-link-icon"><i class="fas fa-arrow-trend-up"></i></div>
-                        Stock Transfers
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
                     
-                    <div class="collapse" id="collapseStransfers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('stocktransfers.index') }}">
-                                <i class="fas fa-eye"></i>&emsp;View</a>
-                            {{-- @can('create','\App\Models\StockTransaction')
-                            <a class="nav-link" href="{{ route('stocktransfers.create') }}">
-                                <i class="fas fa-plus"></i>&emsp;Add</a>
-                            @endcan --}}
-
-                        </nav>
-                    </div>
-
-
-
-                    <a class="nav-link collapsed" href="" data-bs-toggle="collapse" data-bs-target="#collapseSales" aria-expanded="false" aria-controls="collapseSales">
-                        <div class="sb-nav-link-icon"><i class="fas fa-dollar"></i></div>
-                        Sales
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
                     
-                    <div class="collapse" id="collapseSales" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('sales.index') }}">
-                                <i class="fas fa-eye"></i>&emsp;View</a>
-                            <a class="nav-link" href="{{ route('sales.create') }}">
-                                <i class="fas fa-plus"></i>&emsp;Add</a>
-
-                        </nav>
-                    </div>
+                    <x-sidebars.collapser title="Stock Transfers" name="Stransfers" icon="arrow-trend-up" route="stocktransfers"/>
+                    
+                    <x-sidebars.collapser title="Sales" name="Sales" route="sales" icon="dollar" :canCreate="true" model="\App\Models\Sale"/>
 
 
                     @if(Auth::user()->role === 'admin')
-
-                    <a class="nav-link collapsed" href="" data-bs-toggle="collapse" data-bs-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
-                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                        Users
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    
-                    <div class="collapse" id="collapseUsers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('users.index') }}">
-                                <i class="fas fa-eye"></i>&emsp;View</a>
-                            <a class="nav-link" href="{{ route('users.create') }}">
-                                <i class="fas fa-plus"></i>&emsp;Add</a>
-
-                        </nav>
-                    </div>
-                    @endif
-
-
-                    <a class="nav-link collapsed" href="" data-bs-toggle="collapse" data-bs-target="#collapseSales" aria-expanded="false" aria-controls="collapseSales">
-                        <div class="sb-nav-link-icon"><i class="fas fa-dollar"></i></div>
-                        Sales
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    
-                    <div class="collapse" id="collapseSales" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('sales.index') }}">
-                                <i class="fas fa-eye"></i>&emsp;View</a>
-                            <a class="nav-link" href="{{ route('sales.create') }}">
-                                <i class="fas fa-plus"></i>&emsp;Add</a>
-
-                        </nav>
-                    </div>
-
-
-                    @if(Auth::user()->role === 'admin')
-
-                    <a class="nav-link collapsed" href="" data-bs-toggle="collapse" data-bs-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
-                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                        Users
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    
-                    <div class="collapse" id="collapseUsers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('users.index') }}">
-                                <i class="fas fa-eye"></i>&emsp;View</a>
-                            <a class="nav-link" href="{{ route('users.create') }}">
-                                <i class="fas fa-plus"></i>&emsp;Add</a>
-
-                        </nav>
-                    </div>
+                    <x-sidebars.collapser title="Users" name="Users" route="users" icon="user" :canCreate="true" model="\App\Models\User"/>
                     @endif
 
 

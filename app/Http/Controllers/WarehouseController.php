@@ -41,12 +41,22 @@ class WarehouseController extends Controller
 
     public function show(Warehouse $warehouse){
         $this->authorize('view', $warehouse);
-        return view('lookups.show', ['datas'=>$warehouse->toShowData()]);
+
+        $data = [
+            'ID'=>$warehouse->id,
+            'Name'=>$warehouse->name,
+            'Status'=>$warehouse->status,
+            'Location'=>$warehouse->location,
+            
+        ];
+
+        return view('lookups.show', ['datas'=>$data]);
 
     }
 
     public function create(){
-        return view('admin.warehouses.create');
+        $title = "Add a Warehouse";
+        return view('admin.warehouses.create',['title'=>$title]);
     }
     public function store(StoreWarehouseRequest $request){
         try{

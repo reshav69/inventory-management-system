@@ -15,7 +15,7 @@
 
     $(document).on('click', '.open-modal', function() {
         let url = $(this).data('url');
-        let title = $(this).data('title') || 'Form';
+        let title = $(this).data('title') || "{{ $title ?? '' }}";
         
         $('#showModalLabel').text(title);
         

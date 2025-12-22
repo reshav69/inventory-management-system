@@ -49,15 +49,4 @@ class Warehouse extends BaseModel
     }
     
     
-    public function toShowData(){
-        $data = [
-            'ID'=>$this->id,
-            'Name'=>$this->name,
-            'Status'=>$this->status,
-            'Location'=>$this->location,
-            
-        ];
-        return $data;
-    }
-    
 }

@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $title??'Website' }}</title>
+    <style>
+        .cke_notification_warning {
+            display: none !important;
+        }
+    </style>
     @include('includes.cssin')
 </head>
 <body>
@@ -29,18 +34,17 @@
     <script type="text/javascript">
         window.onload = function() {
             var mainInput = document.getElementById("nepali-datepicker");
-
+            if(mainInput){
             mainInput.NepaliDatePicker({
                 'mode':'dark',
                 'disableDaysAfter':1,
                 'animation':'slide',
             });
-            // mainInput.disableDaysAfter(5);
             todayFullDate= NepaliFunctions.BS.GetCurrentDate('YYYY-MM-DD');
             mainInput.value = todayFullDate;
-
+            
             // console.log(NepaliFunctions.BS.GetCurrentDate());
-        };
+        };}
     </script>
     
     @if(session('success'))
@@ -54,7 +58,7 @@
         });
     </script>
     @endif
-    @if($errors->any())
+    @if($errors->has('db_error'))
     <script>
         Swal.fire({
             icon: 'error',
@@ -63,7 +67,7 @@
         });
     </script>
     @endif
-
+    
     @stack('scripts')
 </body>
 </html>

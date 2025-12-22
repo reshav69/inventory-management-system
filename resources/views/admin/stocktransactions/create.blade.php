@@ -17,7 +17,7 @@
                 class="mb-md-0"
                 label="Choose product"
                 />
-                <span class="fw-lighter m-0 p-0" id="remaining-products">Remaining: </span>
+
             </div>
             
             {{-- TRANSACTION TYPE --}}
@@ -27,7 +27,7 @@
                 label="Choose transaction type"
                 class="mb-md-0"
                 placeholder="Choose transaction type"
-                :options="['incoming'=>'Incoming','transfer'=>'Transfer','sale'=>'Sale']"
+                :options="['incoming'=>'Incoming','transfer'=>'Transfer']"
                 id="transaction_type"
                 />
             </div>
@@ -76,7 +76,7 @@
         {{-- QUANTITY + DATE --}}
         <div class="row mb-3">
             <div class="col-md-6">
-                <x-forminputs.text type="number" name="quantity" label="Enter quantity" class="mb-md-0"/>
+                <x-forminputs.text type="number" name="quantity" label="Enter quantity" class="mb-md-0" min="0"/>
             </div>
             
             <div class="col-md-6">
@@ -113,33 +113,10 @@
         }
     }
 
-    
-    function getRemainingProductCount(productId){
-        $.ajax({
-            url: `/products/getProductCount/${productId}`,
-            method: 'GET',
-            success: function(response) {
-                $('#remaining-products').html(
-                'Total Quantity(all warehouses): <strong>' + response.total_quantity + '</strong>, ' +
-                'Remaining Quantity: <strong>' + response.remaining_quantity + '</strong>'
-                );
-            },
-            error: function(err) {
-                console.log('Error fetching remaining quantity:', err);
-            }
-        });
-
-}
 
 $(document).ready(function() {
     updateFormVisibility();
-    
-    $('#product_id').on('change',function(){
-        // console.log('productId');
-        var productId = $(this).val();
-        // console.log(productId);
-        getRemainingProductCount(productId);
-    });
+
     $('#transaction_type').on('change', function() {
         // console.log('ready')
 
