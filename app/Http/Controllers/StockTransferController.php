@@ -58,11 +58,11 @@ class StockTransferController extends Controller
         $stocktransfer = StockTransfer::With('product','fromWarehouse','toWarehouse')->findOrFail($id);
 
         $data = [
-            'ID'=>$stocktransfer->id,
-            'Quantity'=>$stocktransfer->quantity,
+            // 'ID'=>$stocktransfer->id,
             'Product'=>"{$stocktransfer->product->name}",
             'From Warehouse'=>$stocktransfer->fromWarehouse->name,
             'To Warehouse'=>$stocktransfer->toWarehouse->name,
+            'Quantity'=>$stocktransfer->quantity,
             'Transfer Date'=>$stocktransfer->transfer_date,
 
         ];

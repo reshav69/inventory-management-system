@@ -56,4 +56,10 @@ class SaleService
         });
     }
 
+    public function edit_sale($data){
+        return DB::transaction(function() use($data){
+
+        });
+    }
+
 }

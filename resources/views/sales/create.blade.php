@@ -58,6 +58,7 @@
 @endsection
 @push('scripts')
 <script>
+
 $(document).ready(function () {
 
     $('#product_id').on('change', function () {

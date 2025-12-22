@@ -35,6 +35,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::get('/products/trash', [ProductController::class, 'trash'])->name('products.trash');
+    Route::get('/products/trashdata', [ProductController::class, 'trashData'])->name('products.trashData');
+    Route::put('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
+    Route::delete('/products/{id}/forcedelete', [ProductController::class, 'forceDelete'])->name('products.forcedelete');
 
 
     Route::get('warehouses/data', [WarehouseController::class, 'data'])->name('warehouses.data');

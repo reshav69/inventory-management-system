@@ -49,8 +49,19 @@ class SaleController extends Controller
         ->make(true);
 
     }
-    public function show(){
+    public function show(Sale $sale){
+        $this->authorize('view',$sale);
+        $data = [
+            'Product Name'=>$sale->product->name,
+            'Product Price'=>$sale->product->price,
+            'Sold From Warehouse'=>$sale->warehouse->name,
+            'Quantity Sold'=>$sale->quantity,
+            'Total Amount'=>$sale->total_amount,
 
+            'Transaction Date'=>$sale->sale_date,
+
+        ];
+        return view('lookups.show',['datas'=>$data]);
     } 
 
     public function create(){

@@ -9,7 +9,7 @@
             <x-forminputs.text name="name" label="Enter name" :value="$warehouse->name"/>
             <x-forminputs.text name="location" label="Enter location" :value="$warehouse->location"/>
 
-            <x-forminputs.status-radio />
+            <x-forminputs.status-radio :check="$warehouse->status"/>
             <hr>
             
             <button type="submit" class="btn btn-primary">Update Warehouse</button>

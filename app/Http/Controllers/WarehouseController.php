@@ -41,12 +41,15 @@ class WarehouseController extends Controller
 
     public function show(Warehouse $warehouse){
         $this->authorize('view', $warehouse);
-
+        $products = $warehouse->products->pluck('name')->implode(', ');
+        
+        // dd($products);
         $data = [
             'ID'=>$warehouse->id,
             'Name'=>$warehouse->name,
             'Status'=>$warehouse->status,
             'Location'=>$warehouse->location,
+            'Products'=>$products
             
         ];
 

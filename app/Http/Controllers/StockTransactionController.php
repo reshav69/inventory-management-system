@@ -56,10 +56,10 @@ class StockTransactionController extends Controller
         $stocktransaction = StockTransaction::With('product','warehouse')->findOrFail($id);
 
         $data = [
-            'ID'=>$stocktransaction->id,
-            'Quantity'=>$stocktransaction->quantity,
+            // 'ID'=>$stocktransaction->id,
             'Product'=>"{$stocktransaction->product->name}",
             'Warehouse'=>$stocktransaction->warehouse->name,
+            'Quantity'=>$stocktransaction->quantity,
             'TransactionType'=>$stocktransaction->transaction_type,
             'Transaction Date'=>$stocktransaction->transaction_date,
 
@@ -93,7 +93,7 @@ class StockTransactionController extends Controller
 
     }
 
-    public function update(UpdateStockTransactionRequest $request,StockTransaction $stocktransaction){
+    public function update(){
 
 
 

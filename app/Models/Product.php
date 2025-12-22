@@ -60,7 +60,7 @@ class Product extends BaseModel
     }
     public function warehouses()
     {
-        return $this->belongsToMany(Warehouse::class, 'warehouse_stock')
+        return $this->belongsToMany(Warehouse::class, 'warehouse_stocks')
                     ->withPivot('quantity');
     }
 
@@ -68,6 +68,12 @@ class Product extends BaseModel
     {
         return $this->warehouseStocks()->sum('quantity');
     }
+    public function getIsLowStockAttribute(): bool
+    {
+        $totalStock = $this->warehouseStocks()->sum('quantity');
+        return $totalStock < 10;
+    }
+
     
     
     protected function generateKey(){

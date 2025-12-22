@@ -10,33 +10,18 @@
             {{ ucfirst($type) }}
 
         </div>
-        
-        @if(Auth::user()->role === 'admin' && Route::has($type.'.create'))
-        <div class="d-flex gap-2">
-
-            <div class="d-flex justify-content-between">
-                <a class="btn btn-success btn-sm" href="{{ route($type.'.create') }}">+ Add New</a>
-            </div>
-            @if (Route::has($type.'.trash'))
-                
-                <div class="d-flex justify-content-between">
-                    <a class="btn btn-warning btn-sm" href="{{ route($type.'.trash') }}">Trash</a>
-                </div>
-            @endif
-        </div>
-        @endif
     </div>
     
     <div class="card-body">
         
-        <table id="dynamic-table" class="table table-bordered table-striped overflow-scroll mt-2 w-100">
+        <table id="trash-table" class="table table-bordered table-striped overflow-scroll mt-2 w-100">
             <thead>
                 <tr>
                     <th>SN</th>
                     @foreach ($columns as $col)
                     <th>{{ $col }}</th>
                     @endforeach
-                    <th aria-controls="dynamic-table" tabindex="0">Action</th>
+                    <th aria-controls="trash-table" tabindex="0">Action</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -50,7 +35,7 @@
 
 <script>
     $(document).ready(function() {
-        var table = $('#dynamic-table').DataTable({
+        var table = $('#trash-table').DataTable({
             scrollX: true,
             processing: true,
             serverSide: true,

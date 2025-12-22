@@ -122,7 +122,7 @@ $(document).ready(function() {
 
         updateFormVisibility();
     });
-
+    
     $('#product_id').on('change', function () {
         let productId = $(this).val();
         let warehouseSelect = $('#from_warehouse_id');

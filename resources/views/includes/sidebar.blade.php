@@ -41,7 +41,7 @@
                     
                     
                     
-                    <x-sidebars.collapser title="Stock Transfers" name="Stransfers" icon="arrow-trend-up" route="stocktransfers"/>
+                    <x-sidebars.collapser title="Stock Transfers" name="Stransfers" icon="right-left" route="stocktransfers"/>
                     
                     <x-sidebars.collapser title="Sales" name="Sales" route="sales" icon="dollar" :canCreate="true" model="\App\Models\Sale"/>
 

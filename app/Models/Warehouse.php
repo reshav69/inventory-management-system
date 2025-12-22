@@ -38,7 +38,7 @@ class Warehouse extends BaseModel
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'warehouse_stock')
+        return $this->belongsToMany(Product::class, 'warehouse_stocks')
                     ->withPivot('quantity');
     }
 

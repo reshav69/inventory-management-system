@@ -42,7 +42,7 @@
 
             </div>
 
-            <button type="submit" class="btn btn-primary">Add Product</button>
+            <button type="submit" class="btn btn-primary">Add user</button>
 
         </form>
 

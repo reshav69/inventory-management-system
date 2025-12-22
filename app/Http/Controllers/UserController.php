@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
@@ -78,25 +77,51 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        $this->authorize('view',$user);
+
+        $data = [
+            'User ID'=>$user->id,
+            'First Name'=>$user->first_name,
+            'Last Name'=>$user->last_name,
+            'Email'=>$user->email,
+            'User role'=>$user->role,
+            'User status'=>$user->status ? '<span class="badge bg-success">Active</span>' :
+             '<span class="badge bg-danger">Inactive</span>',
+        ];
+        return view('lookups.show',['datas'=>$data]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        $this->authorize('update',$user);
+
+        return view('admin.users.edit',compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $this->authorize('update',$user);
+        $data = $request->validated();
+        try{
+            if (blank($data['password'])) {
+                unset($data['password']);
+            }
+        
+            $user->update($data);
+            return back()->with('success','User Updated');
+        }catch(\Throwable $th){
+            dd($th->getMessage());
+            return back()->withErrors(['db_error'=>'Updating User Failed']);
+        }
+        
     }
 
     /**
