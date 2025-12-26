@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateWarehouseRequest extends FormRequest
+class UpdateSaleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +22,9 @@ class UpdateWarehouseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' =>[
-                'required',
-                'regex:/^[\pL\s]+$/u',
-                'max:50',
-                Rule::unique('warehouses', 'name')->ignore($this->warehouse),
-            ],
-            'location' => 'required|string',
-            'status'      => 'required|boolean',
+            'customer_full_name'=>'nullable|regex:/^[\pL\s]+$/u',
+            'customer_phone_number'=>'nullable|numeric',
+            'customer_extra_info'=>'nullable|string'
         ];
-
     }
 }

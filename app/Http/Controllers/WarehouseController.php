@@ -41,7 +41,9 @@ class WarehouseController extends Controller
 
     public function show(Warehouse $warehouse){
         $this->authorize('view', $warehouse);
-        $products = $warehouse->products->pluck('name')->implode(', ');
+        $products = $warehouse->products->map(function ($product) {
+            return "{$product->name} ({$product->pivot->quantity})";
+        })->implode(', ');
         
         // dd($products);
         $data = [

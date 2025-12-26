@@ -100,7 +100,7 @@ class UserController extends Controller
     {
         $this->authorize('update',$user);
 
-        return view('admin.users.edit',compact('user'));
+        return view('admin.users.edit',compact('user'),['title'=>'Edit user']);
     }
 
     /**

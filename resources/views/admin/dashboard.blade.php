@@ -6,7 +6,7 @@
     ALL CHARTS ARE FAKE DATA
 </p>
 <div>
-    <div class="card" id="userChart"></div>
+    <div class="card" id="userChart">NOT THIS</div>
     <div class="card" id="totalSales"></div>
 
 </div>
@@ -20,7 +20,7 @@
                 height: 350,
                 type: 'pie',
             },
-            series: [10, 90],
+            series: [{{ $adminCount }}, {{ $staffCount }}],
             labels: ['Admin', 'Staff'],
             title: {
                 text: 'User Role Distribution',
@@ -38,7 +38,7 @@
             },
             series: [{
                 name: 'Total Sales',
-                data: [1000, 2000, 3000, 5000, 7000] // Example sales data
+                data: [1000, 2000, 3000, 5000, 7000]
             }],
             xaxis: {
                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],

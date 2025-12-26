@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SearchController;
@@ -26,9 +26,7 @@ Route::group(['middleware'=>'guest'], function(){
 //admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
@@ -58,20 +56,19 @@ Route::middleware(['auth', 'role:admin,staff'])->group(function () {
 
     Route::get('/products/{product}/warehouses', [ProductController::class, 'warehouses'])
     ->name('products.warehouses');
+    Route::get('/products/all-products',[ProductController::class,'products'])->name('products.allproducts');
     Route::get('products/data', [ProductController::class, 'data'])->name('products.data');
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
     Route::get('stocktransactions/data', [StockTransactionController::class, 'data'])->name('stocktransactions.data');
-    // Route::get('/stocktransactions', [StockTransactionController::class, 'index'])->name('stocktransactions.index');
-    // Route::get('/stocktransactions/{product}', [StockTransactionController::class, 'show'])->name('stocktransactions.show');
-    // Route::get('/products/getProductCount/{product}', [ProductController::class, 'getProductCount'])->name('products.getProductCount');
 
     Route::resource('stocktransactions',StockTransactionController::class);
     Route::get('stocktransfers/data',[StockTransferController::class,'data'])->name('stocktransfers.data');
     Route::resource('stocktransfers',StockTransferController::class)->except('create');
     
     Route::get('sales/data',[SaleController::class,'data'])->name('sales.data');
+    Route::post('sales/{sale}/refund',[SaleController::class,'refund'])->name('sales.refund');
     Route::resource('sales',SaleController::class);
     
 });

@@ -10,8 +10,8 @@
         {{-- PRODUCT --}}
         <div class="row mb-3">
             <div class="col-md-6">
-                <x-forminputs.select
-                name="product_id" placeholder="Choose product" :options="$products" class="mb-md-0" label="Choose product"
+                <x-forminputs.select id="product_id"
+                name="product_id" placeholder="Choose product" :options="[]" class="mb-md-0" label="Choose product"
                 />
             </div>
             <div class="col-md-6">
@@ -60,7 +60,22 @@
 <script>
 
 $(document).ready(function () {
+    let productSelect = $('#product_id');
 
+    $.get('/products/all-products', function (data) {
+        productSelect.empty();
+        productSelect.append('<option value="">Select product</option>');
+
+        data.forEach(function (product) {
+            productSelect.append(
+                `<option value="${product.id}">
+                    ${product.name} (Stock: ${product.total_quantity})
+                </option>`
+            );
+        });
+
+        productSelect.trigger('change'); // for select2
+    }); 
     $('#product_id').on('change', function () {
         let productId = $(this).val();
         let warehouseSelect = $('#warehouse_id');

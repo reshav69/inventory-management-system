@@ -21,9 +21,9 @@ class StockTransferController extends Controller
             'type'   => 'stocktransfers',
             'columns'=>['Product','From Warehouse','To Warehouse','Quantity','Date'],
             'columnsConfig'   => [
-                ['data' => 'product', 'name' => 'product'],
-                ['data' => 'from_warehouse', 'name' => 'from_warehouse'],
-                ['data' => 'to_warehouse', 'name' => 'to_warehouse'],
+                ['data' => 'product', 'name' => 'product.name'],
+                ['data' => 'from_warehouse', 'name' => 'fromWarehouse.name'],
+                ['data' => 'to_warehouse', 'name' => 'toWarehouse.name'],
                 ['data' => 'quantity', 'name' => 'quantity'],
                 ['data' => 'transfer_date', 'name' => 'transfer_date'],
 
@@ -36,7 +36,7 @@ class StockTransferController extends Controller
     }
 
     public function data(){
-        return DataTables::of(StockTransfer::query())->addIndexColumn()
+        return DataTables::of(StockTransfer::with('product','fromWarehouse','toWarehouse'))->addIndexColumn()
         ->addColumn('action', function($row){
             return view('lookups.action', ['type'=>'stocktransfers','model' => $row])->render();
         })

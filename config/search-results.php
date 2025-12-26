@@ -21,9 +21,9 @@ return [
         'keywords' => ['warehouse', 'add', 'create'],
     ],
     [
-        'label' => 'View Warehouse',
-        'route' => 'warehouses.create',
-        'policy' => ['Warehouse', 'create'],
+        'label' => 'View Warehouses',
+        'route' => 'warehouses.index',
+        'policy' => ['Warehouse', 'viewAny'],
         'keywords' => ['warehouse', 'view', 'see','list'],
     ],
     /////

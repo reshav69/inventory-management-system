@@ -23,10 +23,11 @@ class StockTransactionController extends Controller
             'type'   => 'stocktransactions',
             'columns'=>['Product','Warehouse','Quantity','Transaction','Date'],
             'columnsConfig'   => [
-                ['data' => 'product', 'name' => 'product'],
-                ['data' => 'warehouse', 'name' => 'warehouse'],
+                // ['data' => 'id', 'name' => 'id'],
+                ['data' => 'product', 'name' => 'product.name'],
+                ['data' => 'warehouse', 'name' => 'warehouse.name'],
                 ['data' => 'quantity', 'name' => 'quantity'],
-                ['data' => 'transaction_type', 'name' => 'transaction_type'],
+                ['data' => 'transaction_type', 'name' => 'stock_transactions.transaction_type'],
                 ['data' => 'transaction_date', 'name' => 'transaction_date'],
 
             ],
@@ -35,7 +36,7 @@ class StockTransactionController extends Controller
     }
     public function data(){
         $this->authorize('viewAny', StockTransaction::class);
-        return DataTables::of(StockTransaction::with('product','warehouse')->orderBy('id','desc'))
+        return DataTables::of(StockTransaction::with('product','warehouse')->orderBy('stock_transactions.id','desc'))
         ->addIndexColumn()
         ->addColumn('product', function ($row) {
             return $row->product_id ? $row->product->name : '-';
@@ -107,7 +108,7 @@ class StockTransactionController extends Controller
             return back()->with('success', 'Delete success.');
         }
         catch(\Throwable $th){
-            return back()->withErrors(['db_error'=>'Could not delete a file']);
+            return back()->withErrors(['db_error'=>'Could not delete']);
         }
 
 

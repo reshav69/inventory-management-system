@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSaleRequest;
+use App\Http\Requests\UpdateSaleRequest;
 use App\Models\Product;
 use App\Models\Sale;
-use App\Models\Warehouse;
 use App\Services\SaleService;
-use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class SaleController extends Controller
@@ -20,19 +19,21 @@ class SaleController extends Controller
             'title' => 'View Sales',
             'dataUrl'   => route('sales.data'),
             'type'   => 'sales',
-            'columns'=>['Product','Warehouse','Price','Quantity','Total'],
+            'columns'=>['Product','Warehouse','Price','Quantity','Total','Sale Date','Status'],
             'columnsConfig'   => [
-                ['data' => 'product', 'name' => 'product'],
-                ['data' => 'warehouse', 'name' => 'warehouse'],
+                ['data' => 'product', 'name' => 'product.name'],
+                ['data' => 'warehouse', 'name' => 'warehouse.name'],
                 ['data' => 'price', 'name' => 'price'],
                 ['data' => 'quantity', 'name' => 'quantity'],
                 ['data' => 'total_amount', 'name' => 'total_amount'],
+                ['data'=>'sale_date','name'=>'sale_date'],
+                ['data'=>'status','name'=>'status'],
             ],
         ]);
 
     }
     public function data(){
-        return DataTables::of(Sale::query()->with('product','warehouse'))
+        return DataTables::of(Sale::query()->with('product','warehouse')->orderBy('sale_date','desc'))
         ->addIndexColumn()
         ->addColumn('product', function ($row) {
             return $row->product_id ? $row->product->name : '-';
@@ -43,9 +44,12 @@ class SaleController extends Controller
         ->addColumn('warehouse', function ($row) {
             return $row->warehouse ? $row->warehouse->name : '-';
         })
+        ->editColumn('status', fn($row) => $row->status === 'refunded'
+            ? '<span class="badge bg-danger">Refunded</span>'
+            : '<span class="badge bg-success">Completed</span>')
         ->addColumn('quantity', fn($product) => $product->quantity ?? 0)
         ->addColumn('action', fn($row) => view('lookups.action', ['type'=>'sales','model' => $row])->render())
-        ->rawColumns(['action'])
+        ->rawColumns(['status','action'])
         ->make(true);
 
     }
@@ -59,6 +63,7 @@ class SaleController extends Controller
             'Total Amount'=>$sale->total_amount,
 
             'Transaction Date'=>$sale->sale_date,
+            'Status'=>$sale->status,
 
         ];
         return view('lookups.show',['datas'=>$data]);
@@ -75,10 +80,64 @@ class SaleController extends Controller
         try {
             $saleService->create_sale($request->validated());
             return redirect()->back()->with('success','Sale Created successfully');
-
+            
         } catch (\Throwable $th) {
             return back()->withErrors(['db_error' => $e->getMessage()])->withInput();
             //throw $th;
         }
     }
+    
+    public function edit(Sale $sale){
+        $this->authorize('update', $sale);
+        
+        return view('sales.edit', compact('sale'));
+        
+    }
+    public function update(UpdateSaleRequest $request,Sale $sale){
+        $this->authorize('update', $sale);
+
+        if ($sale->status === 'refunded') {
+            return back()->withErrors([
+                'db_error' => 'Sale already refunded, cannot edit.',
+            ]);
+        }
+
+        try {
+            $sale->update($request->validated());
+
+            return back()->with('success', 'Details updated successfully');
+        } catch (\Throwable $e) {
+            return back()->withErrors(['db_error' => 'Update failed'])->withInput();
+        }
+
+    }
+    public function refund(SaleService $saleService, Sale $sale)
+    {
+        $this->authorize('update', $sale);
+
+        if ($sale->status === 'refunded') {
+            return back()->withErrors([
+                'db_error' => 'Sale already refunded.',
+            ]);
+        }
+
+        $input = $sale->only([
+            'product_id',
+            'warehouse_id',
+            'quantity',
+            'customer_full_name',
+            'customer_phone_number',
+            'customer_extra_info',
+        ]);
+
+        try {
+            $saleService->refund($sale);
+
+            return redirect()->route('sales.create')->with('success', 'Refunded sale successfully')->withInput($input);
+
+        } catch (\Throwable $e) {
+            return back()->withErrors(['db_error' => 'Failed to refund the sale'])->withInput();
+        }
+    }
+
 }

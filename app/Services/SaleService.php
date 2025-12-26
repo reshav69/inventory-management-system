@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\StockTransaction;
 use App\Models\WarehouseStock;
+use App\Traits\HasNepaliDate;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -21,7 +22,7 @@ class SaleService
                 ->lockForUpdate()
                 ->first();
 
-            if (! $stock) {
+            if (!$stock) {
                 throw new Exception('Selected warehouse does not have this product.');
             }
 
@@ -42,6 +43,7 @@ class SaleService
                 'customer_full_name' => $data['customer_full_name'] ?? null,
                 'customer_phone_number' => $data['customer_phone_number'] ?? null,
                 'customer_extra_info' => $data['customer_extra_info'] ?? null,
+                'status'=>'completed',
             ]);
 
             StockTransaction::create([
@@ -56,9 +58,22 @@ class SaleService
         });
     }
 
-    public function edit_sale($data){
-        return DB::transaction(function() use($data){
+    public function refund($sale){
+        return DB::transaction(function() use($sale){
+            WarehouseStock::where('product_id',$sale->product_id)
+            ->where('warehouse_id',$sale->warehouse_id)->increment('quantity',$sale->quantity);
 
+
+            StockTransaction::create([
+                'product_id' => $sale->product_id,
+                'warehouse_id' => $sale->warehouse_id,
+                'quantity' => $sale->quantity,
+                'transaction_type' => 'incoming',
+                'transaction_date' => HasNepaliDate::getNepaliDate(),
+            ]);
+            $sale->update([
+                'status'=>'refunded'
+            ]);
         });
     }
 

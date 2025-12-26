@@ -19,6 +19,7 @@ class Sale extends BaseModel
         'customer_extra_info',
         'total_amount',
 
+        'status',
         'created_at',
         'updated_at',
         'deleted_at'

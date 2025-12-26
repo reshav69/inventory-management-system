@@ -13,7 +13,7 @@
                 <x-forminputs.select id="product_id"
                 name="product_id" 
                 placeholder="Choose product" 
-                :options="$products"
+                :options="[]"
                 class="mb-md-0"
                 label="Choose product"
                 />
@@ -94,6 +94,7 @@
 @push('scripts')
 <script>
     // alert('tst')
+
     function updateFormVisibility() {
         // console.log('chnage');
         let type = $('#transaction_type').val();
@@ -113,8 +114,24 @@
         }
     }
 
-
 $(document).ready(function() {
+
+    let productSelect = $('#product_id');
+
+    $.get('/products/all-products', function (data) {
+        productSelect.empty();
+        productSelect.append('<option value="">Select product</option>');
+
+        data.forEach(function (product) {
+            productSelect.append(
+                `<option value="${product.id}">
+                    ${product.name} (Stock: ${product.total_quantity})
+                </option>`
+            );
+        });
+
+        productSelect.trigger('change'); // for select2
+    }); 
     updateFormVisibility();
 
     $('#transaction_type').on('change', function() {
@@ -123,8 +140,10 @@ $(document).ready(function() {
         updateFormVisibility();
     });
     
+
     $('#product_id').on('change', function () {
         let productId = $(this).val();
+        console.log(productId);
         let warehouseSelect = $('#from_warehouse_id');
 
         warehouseSelect.empty().append(

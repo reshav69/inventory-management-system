@@ -21,6 +21,7 @@ return new class extends Migration
             $table->bigInteger('customer_phone_number')->nullable();
             $table->string('customer_full_name')->nullable();
             $table->string('customer_extra_info')->nullable();
+            $table->enum('status',['completed','refunded']);
 
             //+5
             $table->integer('created_by');

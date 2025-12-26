@@ -56,7 +56,6 @@
             serverSide: true,
             ajax: '{{ $dataUrl }}',
             dom: 'Blfrtip',
-            order: [[0, 'asc']],
             xhrFields: {
                 withCredentials: true
             },

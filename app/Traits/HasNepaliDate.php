@@ -34,12 +34,19 @@ trait HasNepaliDate
 
     public static function nowNepali()
     {
-        $date = Carbon::now('Asia/Kathmandu');
-        $englishDate = $date->toDateString();
-        $time = $date->toTimeString();
-        $nepaliDate = LaravelNepaliDate::from($englishDate)->toNepaliDate(format: 'Y-m-d', locale: 'en');
+        $date = static::getNepaliDate();
+        $time = static::getNepaliTime();
 
-        return $nepaliDate . ' ' . $time;
+        return $date. ' ' . $time;
 
+    }
+    public static function getNepaliDate(){
+        $englishDate = Carbon::now('Asia/Kathmandu')->toDateString();
+        $date= LaravelNepaliDate::from($englishDate)->toNepaliDate('Y-m-d','en');
+        return $date;
+    }
+    public static function getNepaliTime(){
+        $time= Carbon::now('Asia/Kathmandu')->toTimeString();
+        return $time;
     }
 }

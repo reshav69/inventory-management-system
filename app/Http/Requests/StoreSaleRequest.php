@@ -27,7 +27,7 @@ class StoreSaleRequest extends FormRequest
             'warehouse_id' => 'required','exists:warehouse,id',
             'quantity' => 'required|integer|min:1',
             'sale_date' => 'required|string',
-            'customer_full_name'=>'nullable|string',
+            'customer_full_name'=>'nullable|regex:/^[\pL\s]+$/u',
             'customer_phone_number'=>'nullable|numeric',
             'customer_extra_info'=>'nullable|string'
         ];

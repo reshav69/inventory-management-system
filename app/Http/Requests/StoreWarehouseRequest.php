@@ -23,7 +23,7 @@ class StoreWarehouseRequest extends FormRequest
     {
         
         return [
-            'name'        => 'required|string|max:255|unique:warehouses,name',
+            'name'        => 'required|regex:/^[\pL\s]+$/u|max:255|unique:warehouses,name',
             'location' => 'required|string',
             'status'      => 'required|boolean',
             

@@ -37,7 +37,12 @@ class SalePolicy
      */
     public function update(User $user, Sale $sale): bool
     {
-        return $user->role === 'admin' || $user->role === 'staff';
+        if ($sale->status === 'refunded') {
+            return false;
+        }
+
+        return $user->role === 'admin';
+
     }
 
     /**

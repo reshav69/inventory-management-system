@@ -32,7 +32,11 @@
         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i>
         {{Auth::user()->email}}</a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#!">Settings</a></li>
+            @if(Auth::user()->role==='admin')
+                <li><a class="dropdown-item" href="{{route('admin.dashboard')}}">Dashboard</a></li>
+            @elseif(Auth::user()->role==='staff')
+                <li><a class="dropdown-item" href="{{route('staff.dashboard')}}">Dashboard</a></li>
+            @endif
             <li><a class="dropdown-item" href="#!">Activity Log</a></li>
             <li><hr class="dropdown-divider" /></li>
             <li>
