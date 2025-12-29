@@ -16,8 +16,8 @@ class StockTransaction extends Model
         'transaction_type',
         'transaction_date',
 
-        'created_at',
-        'updated_at',
+        'created_at_bs',
+        'updated_at_bs',
     ];
     public function product()
     {

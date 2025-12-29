@@ -8,26 +8,20 @@ use Carbon\Carbon;
 
 trait HasNepaliDate
 {
-    
-    protected function runSoftDelete()
-    {
-        $this->deleted_at = self::nowNepali();
-        $this->save();
-    }
 
     protected static function bootHasNepaliDate()
     {
         static::creating(function ($model) {
-            $model->created_at = self::nowNepali();
+            $model->created_at_bs = self::nowNepali();
             // $model->updated_at = self::nowNepali();
         });
         
         static::updating(function ($model) {
-            $model->updated_at = self::nowNepali();
+            $model->updated_at_bs = self::nowNepali();
         });
         
         static::deleting(function ($model) {
-            $model->deleted_at = self::nowNepali();
+            $model->deleted_at_bs = self::nowNepali();
         });
 
     }

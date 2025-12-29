@@ -19,8 +19,9 @@ return new class extends Migration
             $table->integer('quantity')->default(0);
 
             $table->unique(['product_id', 'warehouse_id']);
-            $table->string('created_at');
-            $table->string('updated_at')->nullable();
+            $table->string('created_at_bs');
+            $table->string('updated_at_bs')->nullable();
+            $table->timestamps();
         });
     }
     

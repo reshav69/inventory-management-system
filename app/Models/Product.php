@@ -10,8 +10,9 @@ use Illuminate\Support\Str;
 
 
 
-class Product extends BaseModel
+class Product extends Model
 {
+    use SoftDeletes, HasCreator, HasNepaliDate;
     protected static function booted()
     {
         static::creating(function ($product) {
@@ -35,9 +36,9 @@ class Product extends BaseModel
         'image_path',
         'status',
         
-        'created_at',
-        'updated_at',
-        'deleted_at'
+        'created_at_bs',
+        'updated_at_bs',
+        'deleted_at_bs'
     ];
 
     public function warehouseStocks()

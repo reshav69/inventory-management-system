@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('last_name')->after('first_name');
             $table->enum('role',['admin','staff'])->default('staff')->after('password');
             $table->boolean('status')->default(0)->after('role');
-            $table->string('created_at');
-            $table->string('updated_at')->nullable();
+            $table->string('created_at_bs');
+            $table->string('updated_at_bs')->nullable();
         });
     }
 

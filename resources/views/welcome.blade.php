@@ -51,7 +51,7 @@
         <div class="container">
             <h1 class="display-4">Efficient Inventory Management</h1>
             <p class="lead">Simplify your business with our Inventory Management System</p>
-            <a href="{{route('admin.dashboard')}}" class="btn btn-primary btn-lg">Get Started</a>
+            <a href="{{route('dashboard')}}" class="btn btn-primary btn-lg">Get Started</a>
         </div>
     </div>
 

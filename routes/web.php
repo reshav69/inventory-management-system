@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SearchController;
@@ -26,7 +26,6 @@ Route::group(['middleware'=>'guest'], function(){
 //admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
@@ -38,10 +37,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
     Route::delete('/products/{id}/forcedelete', [ProductController::class, 'forceDelete'])->name('products.forcedelete');
 
-
     Route::get('warehouses/data', [WarehouseController::class, 'data'])->name('warehouses.data');
     Route::resource('warehouses',WarehouseController::class);
-    
     
     Route::get('users/data', [UserController::class, 'data'])->name('users.data');
     Route::resource('users',UserController::class);
@@ -51,8 +48,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:admin,staff'])->group(function () {
     Route::get('/search', [SearchController::class, 'index'])->name('search');
 
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout',[AuthController::class,'logout'])->name('logout');
-
 
     Route::get('/products/{product}/warehouses', [ProductController::class, 'warehouses'])
     ->name('products.warehouses');
@@ -73,11 +70,3 @@ Route::middleware(['auth', 'role:admin,staff'])->group(function () {
     
 });
 
-
-//staff
-Route::middleware(['auth', 'role:staff'])->group(function () {
-
-    Route::get('/staff/dashboard', function () {
-        return view('staff.dashboard');
-    })->name('staff.dashboard');
-});

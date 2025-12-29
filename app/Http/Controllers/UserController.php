@@ -69,6 +69,7 @@ class UserController extends Controller
             User::create($data);
             return back()->with('success','Added a new user');
         }catch(\Throwable $th){
+            dd($th->getMessage());
             return back()->withErrors(['db_error'=>'Adding Failed']);
         }
 

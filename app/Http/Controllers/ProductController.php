@@ -71,7 +71,7 @@ class ProductController extends Controller
 
     public function warehouses(Product $product)
     {
-        $this->authorize('viewAny', Product::class);
+        $this->authorize('view', $product);
         $warehouses = $product->warehouseStocks()
         ->where('quantity', '>', 0)
         ->with('warehouse:id,name')
@@ -259,11 +259,13 @@ class ProductController extends Controller
 
     }
     public function forceDelete($id){
-       $this->authorize('forceDelete',Product::class); 
        try {
            $product = Product::onlyTrashed()->findOrFail($id);
+           $this->authorize('forceDelete',$product); 
            $product->forceDelete();
-           Storage::delete($product->image_path);
+           if ($product->image_path) {
+                Storage::disk('public')->delete($product->image_path);
+           }
            return back()->with('success','product deleted force fully');
        } catch (\Throwable $e) {
            return back()->withErrors(['db_error'=>'Failed to force delete']);

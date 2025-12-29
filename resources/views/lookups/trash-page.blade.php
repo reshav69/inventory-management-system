@@ -7,7 +7,7 @@
     <div class="card-header d-flex justify-content-between">
         <div>
             <i class="fas fa-table me-1"></i>
-            {{ ucfirst($type) }}
+            {{ ucfirst($type).' Trash' }}
 
         </div>
     </div>

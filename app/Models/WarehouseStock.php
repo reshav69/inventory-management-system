@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class WarehouseStock extends Model
 {
     use HasNepaliDate;
-    public $timestamps = false;
+
     protected $table = 'warehouse_stocks';
 
     protected $fillable = [
         'product_id',
         'warehouse_id',
         'quantity',
+        'created_at_bs',
+        'updated_at_bs'
     ];
 
     public function product()

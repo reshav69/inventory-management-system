@@ -21,8 +21,9 @@ return new class extends Migration
 
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
-            $table->string('created_at');
-            $table->string('updated_at')->nullable();
+            $table->string('created_at_bs');
+            $table->string('updated_at_bs')->nullable();
+            $table->timestamps();
         });
     }
 

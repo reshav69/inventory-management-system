@@ -1,18 +1,23 @@
 @extends('includes.layout')
 
 @section('content')
+@if(Auth::user()->role==='admin')
 <h1>Admin Dashboard</h1>
+@else
+<h1>Staff Dashboard</h1>
+
+@endif
 <p>
     ALL CHARTS ARE FAKE DATA
 </p>
 <div>
     <div class="card" id="userChart">NOT THIS</div>
-    <div class="card" id="totalSales"></div>
-
+    @include('dashboard.widgets.salesovertime',['salesTrend'=>$salesTrend])
+    <div class="card" id="salesOverTime"></div>
 </div>
 @endsection
 
-
+{{-- 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var userChartOptions = {
@@ -53,3 +58,4 @@
 
     });
 </script>
+ --}}

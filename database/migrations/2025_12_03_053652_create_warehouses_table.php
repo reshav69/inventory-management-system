@@ -19,11 +19,11 @@ return new class extends Migration
             $table->boolean('status')->default(0);
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
-            // $table->softDeletes();
-            // $table->timestamps();
-            $table->string('created_at');
-            $table->string('updated_at')->nullable();
-            $table->string('deleted_at')->nullable();
+            $table->softDeletes();
+            $table->timestamps();
+            $table->string('created_at_bs');
+            $table->string('updated_at_bs')->nullable();
+            $table->string('deleted_at_bs')->nullable();
             
         });
     }
