@@ -29,14 +29,14 @@
     
     <div class="card-body">
         
-        <table id="dynamic-table" class="table table-bordered table-striped overflow-scroll mt-2 w-100">
+        <table id="dynamic-table" class="table table-bordered table-responsive table-striped overflow-scroll mt-2 w-100">
             <thead>
                 <tr>
                     <th>SN</th>
                     @foreach ($columns as $col)
                     <th>{{ $col }}</th>
                     @endforeach
-                    <th aria-controls="dynamic-table" tabindex="0">Action</th>
+                    <th >Action</th>
                 </tr>
             </thead>
             <tbody></tbody>

@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
-use App\Models\StockTransaction;
 
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
@@ -53,6 +52,7 @@ class ProductController extends Controller
             if ($product->is_low_stock) {
                 return $qty . ' (low stock)';
             }
+            elseif ($product->is_out_of_stock())  return $qty . ' (out of stock)';
 
             return $qty;
         })
@@ -129,7 +129,6 @@ class ProductController extends Controller
             return back()->with('success', 'Product created successfully.');
 
         } catch (\Throwable $th) {
-                //throw $th;
                 // dd($th->getMessage());
             return back()->withErrors(['db_error'=>'Failed adding product']);
         }
@@ -149,9 +148,10 @@ class ProductController extends Controller
             'ID'=>$product->id, 
             'Name'=>$product->name,
             'Status'=>$product->status,
+            'Total Quantity'=>$product->total_stock,
             'Available Warehouses'=>$warehouses,
             'Description'=>$product->description,
-            'Image'=>$product->image_path,
+            'Image'=>$product->image_path??'',
             'Barcode'=>$product->barcode,
             'Created_by'=>$product->createdBy->email,
             'Created_at'=>$product->created_at,
@@ -181,7 +181,6 @@ class ProductController extends Controller
             $data = $request->validated();
 
             if ($request->hasFile('image')) {
-                    // Delete old image if exists
                 if ($product->image_path && Storage::disk('public')->exists($product->image_path)) {
                     Storage::disk('public')->delete($product->image_path);
                 }
@@ -203,7 +202,6 @@ class ProductController extends Controller
     {
         $this->authorize('delete', $product);
         try {
-                //code...
             $product->delete();
             return back('lookups.index')->with('success', 'Product deleted successfully.');
         } catch (\Throwable $th) {
@@ -220,11 +218,11 @@ class ProductController extends Controller
         ->addIndexColumn()
 
         ->addColumn('quantity', fn($product) => $product->quantity ?? 0)
-                // ->editColumn('quantity',fn($product)=>$product->quantity < 10 ? '(low Stock)' : '')
         ->addColumn('action', fn($row) => view('lookups.trash-action', ['type'=>'products','model' => $row])->render())
         ->editColumn('status', fn($row) => $row->status
             ? '<span class="badge bg-success">Active</span>'
             : '<span class="badge bg-danger">Inactive</span>')
+        ->editColumn('deleted_at',fn($row)=>$row->deleted_at->format('Y-m-d h:m:s'))
         ->rawColumns(['status','action'])
         ->make(true);
     }
@@ -249,7 +247,6 @@ class ProductController extends Controller
         $product = Product::onlyTrashed()->findOrFail($id);
         $this->authorize('restore', $product);
         try {
-                    //code...
             $product->restore();
             return back()->with('success', 'Product restored successfully.');
         } catch (\Throwable $th) {

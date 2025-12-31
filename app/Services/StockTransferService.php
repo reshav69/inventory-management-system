@@ -25,7 +25,6 @@ class StockTransferService
                 throw new \Exception('Source and destination warehouses must be different');
             }
 
-            // Calculate current stock in source warehouse
             $sourceStock = WarehouseStock::where('product_id', $productId)
             ->where('warehouse_id', $fromWarehouseId)
             ->lockForUpdate()
@@ -60,7 +59,7 @@ class StockTransferService
                 'product_id' => $productId,
 
                 'warehouse_id' => $fromWarehouseId,
-                'quantity' => -$quantity, // subtract
+                'quantity' => -$quantity,
                 'transaction_type' => 'transfer',
                 'transaction_date' => $transactionDate,
             ]);
@@ -68,7 +67,7 @@ class StockTransferService
             StockTransaction::create([
                 'product_id' => $productId,
                 'warehouse_id' => $toWarehouseId,
-                'quantity' => $quantity, // add
+                'quantity' => $quantity, 
                 'transaction_type' => 'transfer',
                 'transaction_date' => $transactionDate,
             ]);

@@ -3,13 +3,13 @@
     <button class="btn btn-sm btn-info open-modal" data-url="{{ route($type.'.show', $model->id) }}" data-title="{{ ucfirst($model->name) }}">
         Show
     </button>
-    @if(in_array($type,['products','warehouse','sales']))
+    @if(in_array($type,['products','warehouses','sales','users']))
     @can('update',$model)
     <a href="{{ route($type.'.edit',$model->id) }}" class="btn btn-sm btn-primary">Edit</a>
     @endcan
     @endif
 
-    @if(in_array($type,['products','warehouse']))
+    @if(in_array($type,['products','warehouses','users']))
     @can('delete',$model)
     <form action="{{ route($type.'.destroy',$model->id) }}" method="POST" class="d-inline delete-btn">
         @csrf

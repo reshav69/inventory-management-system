@@ -30,7 +30,7 @@ class StoreStockTransactionRequest extends FormRequest
             'from_warehouse_id' => 'nullable|required_if:transaction_type,transfer|exists:warehouses,id',
             'to_warehouse_id' => 'nullable|required_if:transaction_type,transfer|exists:warehouses,id|different:from_warehouse_id',
             'transaction_type' => 'required|in:incoming,transfer',
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'required|integer|min:1|gt:0',
             'transaction_date' => 'required|string',
 
         ];

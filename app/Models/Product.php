@@ -72,7 +72,12 @@ class Product extends Model
     public function getIsLowStockAttribute(): bool
     {
         $totalStock = $this->warehouseStocks()->sum('quantity');
-        return $totalStock < 10;
+        return $totalStock > 0 && $totalStock < 10;
+    }
+    public function is_out_of_stock(): bool
+    {
+        $totalStock = $this->warehouseStocks()->sum('quantity');
+        return $totalStock == 0;
     }
 
     

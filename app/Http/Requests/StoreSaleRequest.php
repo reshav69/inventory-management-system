@@ -25,7 +25,7 @@ class StoreSaleRequest extends FormRequest
         return [
             'product_id' => 'required|exists:products,id',
             'warehouse_id' => 'required','exists:warehouse,id',
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'required|integer|min:1|gt:0',
             'sale_date' => 'required|string',
             'customer_full_name'=>'nullable|regex:/^[\pL\s]+$/u',
             'customer_phone_number'=>'nullable|numeric',

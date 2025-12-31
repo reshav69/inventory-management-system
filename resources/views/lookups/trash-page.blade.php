@@ -3,17 +3,21 @@
 @section('content')
 
 <div class="p-2 overflow-scroll card mt-3" >
-    
+
     <div class="card-header d-flex justify-content-between">
         <div>
             <i class="fas fa-table me-1"></i>
             {{ ucfirst($type).' Trash' }}
 
         </div>
+        <div class="d-flex gap-2">
+            <a class="btn btn-primary btn-sm" href="{{ route($type.'.index') }}"><i class="fa fa-arrow-left"></i>Go Back</a>
+        </div>
     </div>
+
     
     <div class="card-body">
-        
+
         <table id="trash-table" class="table table-bordered table-striped overflow-scroll mt-2 w-100">
             <thead>
                 <tr>
@@ -54,7 +58,7 @@
                 { width: "fit", targets: -1 }
             ],
             buttons: [
-                
+
                 'copy', 'excel', 'csv', 'pdf', 'print'
             ],
 

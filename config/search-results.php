@@ -73,10 +73,18 @@ return [
         'keywords' => ['sales','sell', 'view', 'see','list'],
     ],
     [
+
         'label' => 'Add Sales',
         'route' => 'sales.create',
         'policy' => ['Sale', 'create'],
         'keywords' => ['sales','sell', 'add', 'create'],
     ],
+    //////
     
+    [
+        'label' => 'Dashboard',
+        'route' => 'dashboard',
+        'policy' => ['Dashboard', 'view'],
+        'keywords' => ['dashboard', 'charts'],
+    ]
 ];

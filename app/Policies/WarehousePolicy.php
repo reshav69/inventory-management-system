@@ -45,6 +45,10 @@ class WarehousePolicy
      */
     public function delete(User $user, Warehouse $warehouse): bool
     {
+        if ($warehouse->warehouseStocks()->where('quantity', '>', 0)->exists()) {
+            return false;
+        }
+
         return $user->role==='admin';
     }
 

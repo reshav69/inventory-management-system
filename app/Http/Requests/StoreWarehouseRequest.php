@@ -23,11 +23,17 @@ class StoreWarehouseRequest extends FormRequest
     {
         
         return [
-            'name'        => 'required|regex:/^[\pL\s]+$/u|max:255|unique:warehouses,name',
+            'name'        => 'required|regex:/^[\pL\s]+$/u|max:55|unique:warehouses,name',
             'location' => 'required|string',
             'status'      => 'required|boolean',
             
         ];
         
+    }
+    public function messages()
+    {
+        return [
+            'name.regex'=>'The name must only contain letters',
+        ];
     }
 }

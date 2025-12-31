@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStockTransactionRequest;
-use App\Http\Requests\UpdateStockTransactionRequest;
 use App\Models\Product;
 use App\Models\StockTransaction;
 use App\Models\Warehouse;
 use App\Services\StockTransactionService;
 use Yajra\DataTables\DataTables;
-
 
 class StockTransactionController extends Controller
 {
@@ -90,27 +88,5 @@ class StockTransactionController extends Controller
         }
 
     }
-    public function edit(StockTransaction $stocktransaction){
 
-    }
-
-    public function update(){
-
-
-
-    }
-
-    public function destroy(StockTransaction $stocktransaction){
-        try
-        {
-
-            $stocktransaction->delete();
-            return back()->with('success', 'Delete success.');
-        }
-        catch(\Throwable $th){
-            return back()->withErrors(['db_error'=>'Could not delete']);
-        }
-
-
-    }
 }

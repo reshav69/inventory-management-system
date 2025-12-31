@@ -62,8 +62,10 @@ class SaleController extends Controller
             'Quantity Sold'=>$sale->quantity,
             'Total Amount'=>$sale->total_amount,
 
-            'Transaction Date'=>$sale->sale_date,
-            'Status'=>$sale->status,
+            'Sale Date'=>$sale->sale_date,
+            'Sales Status'=>$sale->status=== 'completed'?'<span class="badge bg-success">Completed</span>':
+            '<span class="badge bg-danger">Refunded</span>',
+            'Created by'=>$sale->createdBy->email
 
         ];
         return view('lookups.show',['datas'=>$data]);

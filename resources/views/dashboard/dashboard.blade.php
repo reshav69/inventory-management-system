@@ -8,54 +8,34 @@
 
 @endif
 <p>
-    ALL CHARTS ARE FAKE DATA
+    THis is chart area
 </p>
 <div>
-    <div class="card" id="userChart">NOT THIS</div>
-    @include('dashboard.widgets.salesovertime',['salesTrend'=>$salesTrend])
-    <div class="card" id="salesOverTime"></div>
+
+    <div class="border p-2">
+       @include("dashboard._cards") 
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-8">
+            @include('dashboard.widgets.warehousestock',['warehouseStocks'=>$warehouseStocks])
+
+        </div>
+        <div class="col-md-4">
+            @include('dashboard.widgets.stockhealth', ['stockHealth' => $stockHealth])
+        </div>    
+    </div>
+    <div class="row mt-3 mb-3">
+       <div class="col-md-6">
+           
+            @include('dashboard.widgets.salestrend',['salesTrend'=>$salesTrend])
+       </div> 
+
+       <div class="col-md-6">
+           
+        @include('dashboard.widgets.topproducts', ['salesTrend' => $topProducts])
+       </div>
+    </div>
+
+
 </div>
 @endsection
-
-{{-- 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var userChartOptions = {
-            chart: {
-                height: 350,
-                type: 'pie',
-            },
-            series: [{{ $adminCount }}, {{ $staffCount }}],
-            labels: ['Admin', 'Staff'],
-            title: {
-                text: 'User Role Distribution',
-                align: 'center'
-            }
-        };
-
-        var userChart = new ApexCharts(document.querySelector("#userChart"), userChartOptions);
-        userChart.render();
-
-        var totalSalesChartOptions = {
-            chart: {
-                height: 350,
-                type: 'line',
-            },
-            series: [{
-                name: 'Total Sales',
-                data: [1000, 2000, 3000, 5000, 7000]
-            }],
-            xaxis: {
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-            },
-            title: {
-                text: 'Sales Over Time',
-                align: 'center'
-            }
-        };
-        var totalSales = new ApexCharts(document.querySelector("#totalSales"), totalSalesChartOptions);
-        totalSales.render();
-
-    });
-</script>
- --}}

@@ -17,8 +17,8 @@ Route::get('/', function () {
 });
 Route::group(['middleware'=>'guest'], function(){
 
-    // Route::get('/register',[AuthController::class,'register'])->name('register');
-    // Route::post('/register',[AuthController::class,'store']);
+    Route::get('/register',[AuthController::class,'register'])->name('register');
+    Route::post('/register',[AuthController::class,'store']);
 
     Route::get('/login',[AuthController::class,'showLogin'])->name('login');
     Route::post('/login',[AuthController::class,'login']);
@@ -37,6 +37,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::put('/products/{id}/restore', [ProductController::class, 'restore'])->name('products.restore');
     Route::delete('/products/{id}/forcedelete', [ProductController::class, 'forceDelete'])->name('products.forcedelete');
 
+       Route::get('/warehouses/trash', [WarehouseController::class, 'trash'])->name('warehouses.trash');
+    Route::get('/warehouses/trashdata', [WarehouseController::class, 'trashData'])->name('warehouses.trashData');
+    Route::put('/warehouses/{id}/restore', [WarehouseController::class, 'restore'])->name('warehouses.restore');
+    Route::delete('/warehouses/{id}/forcedelete', [WarehouseController::class, 'forceDelete'])->name('warehouses.forcedelete');
     Route::get('warehouses/data', [WarehouseController::class, 'data'])->name('warehouses.data');
     Route::resource('warehouses',WarehouseController::class);
     
@@ -60,7 +64,7 @@ Route::middleware(['auth', 'role:admin,staff'])->group(function () {
 
     Route::get('stocktransactions/data', [StockTransactionController::class, 'data'])->name('stocktransactions.data');
 
-    Route::resource('stocktransactions',StockTransactionController::class);
+    Route::resource('stocktransactions',StockTransactionController::class)->only('create','show','index','store');
     Route::get('stocktransfers/data',[StockTransferController::class,'data'])->name('stocktransfers.data');
     Route::resource('stocktransfers',StockTransferController::class)->except('create');
     

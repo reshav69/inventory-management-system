@@ -50,7 +50,7 @@
 
 <script>
     // console.log(@json($datas));
-    
+
 </script>
 {{-- @if ($datas && $datas[])
 <svg id="barcode"></svg>

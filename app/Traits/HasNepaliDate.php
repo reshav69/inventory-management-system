@@ -43,4 +43,5 @@ trait HasNepaliDate
         $time= Carbon::now('Asia/Kathmandu')->toTimeString();
         return $time;
     }
+
 }

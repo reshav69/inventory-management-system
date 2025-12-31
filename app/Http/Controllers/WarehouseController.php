@@ -34,7 +34,7 @@ class WarehouseController extends Controller
             return view('lookups.action', ['type'=>'warehouses','model' => $row])->render();
         })
         ->editColumn('status', fn($row) => $row->status? '<span class="badge bg-success">Active</span>' :
-             '<span class="badge bg-danger">Inactive</span>')
+           '<span class="badge bg-danger">Inactive</span>')
         ->rawColumns(['status','action'])
         ->make(true);
     }
@@ -93,73 +93,78 @@ class WarehouseController extends Controller
     public function destroy(Warehouse $warehouse){
         $this->authorize('delete', $warehouse);
         try {
-            
-            $warehouse->delete();
-            return back()->with('success','Delete Success');
+            // $hasStock = $warehouse->warehouseStocks()
+            // ->where('quantity', '>', 0)
+            // ->exists();
 
-        } catch (\Throwable $th) {
+            // if ($hasStock) {
+            //     return back()->withErrors([
+            //         'db_error' => 'Warehouse has active stock, cannot delete'
+            //     ]);
+            // }
+           $warehouse->delete();
+           return back()->with('success','Delete Success');
+
+       } catch (\Throwable $th) {
             //throw $th;
-            dd($th);
-            return back()->withErrors(['db_error'=>'Deletion failed']);
-        }
+            // dd($th);
+        return back()->withErrors(['db_error'=>'Deletion failed']);
     }
+}
 
-    public function trashData(){
-        return DataTables::of(
-            Warehouse::withSum('warehouseStocks as quantity', 'quantity')->onlyTrashed()->orderBy('id','desc')
-        )
-        ->addIndexColumn()
+public function trashData(){
+    return DataTables::of(
+        Warehouse::withSum('warehouseStocks as quantity', 'quantity')->onlyTrashed()->orderBy('id','desc')
+    )
+    ->addIndexColumn()
 
-        ->addColumn('quantity', fn($Warehouse) => $Warehouse->quantity ?? 0)
-                // ->editColumn('quantity',fn($product)=>$product->quantity < 10 ? '(low Stock)' : '')
-        ->addColumn('action', fn($row) => view('lookups.trash-action', ['type'=>'products','model' => $row])->render())
-        ->editColumn('status', fn($row) => $row->status
-            ? '<span class="badge bg-success">Active</span>'
-            : '<span class="badge bg-danger">Inactive</span>')
-        ->rawColumns(['status','action'])
-        ->make(true);
-    }
+    ->addColumn('quantity', fn($Warehouse) => $Warehouse->quantity ?? 0)
+    ->addColumn('action', fn($row) => view('lookups.trash-action', ['type'=>'warehouses','model' => $row])->render())
+    ->editColumn('status', fn($row) => $row->status
+        ? '<span class="badge bg-success">Active</span>'
+        : '<span class="badge bg-danger">Inactive</span>')
+    ->rawColumns(['status','action'])
+    ->make(true);
+}
 
-    public function trash(){
-        return view('lookups.trash-page', [
-            'title' => 'View Products Trash',
-            'dataUrl'   => route('products.trashData'),
-            'type'   => 'products',
-            'columns'=>['Name','Status','Price','Quantity','Deleted At'],
-            'columnsConfig'   => [
-                ['data' => 'name', 'name' => 'name'],
-                ['data' => 'status', 'name' => 'status'],
-                ['data' => 'price', 'name' => 'price'],
-                ['data' => 'quantity', 'name' => 'quantity'],
-                ['data' => 'deleted_at', 'name' => 'deleted_at'],
-            ],
-        ]);
+public function trash(){
+    return view('lookups.trash-page', [
+        'title' => 'View Warehouse Trash',
+        'dataUrl'   => route('warehouses.trashData'),
+        'type'   => 'warehouses',
+        'columns'=>['Name','Status','Location','Deleted At'],
+        'columnsConfig'   => [
+            ['data' => 'name', 'name' => 'name'],
+            ['data' => 'status', 'name' => 'status'],
+            ['data' => 'location', 'name' => 'location'],
+            ['data' => 'deleted_at', 'name' => 'deleted_at'],
+        ],
+    ]);
 
-    }
-    public function restore($id){
-        $Warehouse = Warehouse::onlyTrashed()->findOrFail($id);
-        $this->authorize('restore', $Warehouse);
-        try {
+}
+public function restore($id){
+    $Warehouse = Warehouse::onlyTrashed()->findOrFail($id);
+    $this->authorize('restore', $Warehouse);
+    try {
                     //code...
-            $Warehouse->restore();
-            return back()->with('success', 'Warehouse restored successfully.');
-        } catch (\Throwable $th) {
+        $Warehouse->restore();
+        return back()->with('success', 'Warehouse restored successfully.');
+    } catch (\Throwable $th) {
                     //throw $th;
-            return back()->withErrors(['db_error'=>'Failed to restore']);
-        }   
+        return back()->withErrors(['db_error'=>'Failed to restore']);
+    }   
 
-    }
-    public function forceDelete($id){
-       $this->authorize('forceDelete',Warehouse::class); 
-       try {
-           $Warehouse = Warehouse::onlyTrashed()->findOrFail($id);
-           $Warehouse->forceDelete();
-           Storage::delete($Warehouse->image_path);
-           return back()->with('success','Warehouse deleted force fully');
-       } catch (\Throwable $e) {
-           return back()->withErrors(['db_error'=>'Failed to force delete']);
-       }
+}
+public function forceDelete($id){
+ try {
+     $Warehouse = Warehouse::onlyTrashed()->findOrFail($id);
+     $this->authorize('forceDelete',$Warehouse); 
+     $Warehouse->forceDelete();
+     return back()->with('success','Warehouse deleted force fully');
+ } catch (\Throwable $e) {
+     return back()->withErrors(['db_error'=>'Failed to force delete']);
+ }
 
-    }
+}
 
 }

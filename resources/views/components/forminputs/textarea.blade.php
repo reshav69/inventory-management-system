@@ -6,17 +6,19 @@
 ])
 
 <label for="{{ $name }}">{{ $label }}</label>
-<div class="form-floating mb-3 {{ $class }}">
+
+<div class="form-floating mb-3 @error($name) is-invalid @enderror">
     <textarea class="form-control"
      name="{{ $name }}"
      id="{{ $name }}"
      placeholder="{{ $label }}"
-     >{{ $value ?? old($name) }}</textarea>
+    {{$attributes}}>{{ $value ?? old($name) }}
+    </textarea> 
 
+</div>
     @error($name)
         <div class="invalid-feedback">{{ $message }}</div>
     @enderror
-</div>
 @push('scripts')
     
 <script>

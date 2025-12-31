@@ -46,6 +46,7 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product): bool
     {
+        if($product->warehouseStocks()->where('quantity', '>' ,0)->exists()) return false;
         return $user->role==='admin';
     }
 
