@@ -55,9 +55,15 @@
             processing: true,
             serverSide: true,
             ajax: '{{ $dataUrl }}',
-            dom: 'Blfrtip',
             xhrFields: {
                 withCredentials: true
+            },
+            layout:{
+                topStart: 'pageLength',
+                top:'buttons',
+                topEnd: 'search',
+                bottomStart: 'info',
+                bottomEnd: 'paging',
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: 'false', orderable: 'false' },
@@ -68,7 +74,6 @@
                 { width: "fit", targets: -1 }
             ],
             buttons: [
-                
                 'copy', 'excel', 'csv', 'pdf', 'print'
             ],
 

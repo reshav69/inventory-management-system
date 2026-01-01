@@ -84,7 +84,6 @@ return [
     [
         'label' => 'Dashboard',
         'route' => 'dashboard',
-        'policy' => ['Dashboard', 'view'],
         'keywords' => ['dashboard', 'charts'],
     ]
 ];

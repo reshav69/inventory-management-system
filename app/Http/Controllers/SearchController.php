@@ -23,8 +23,8 @@ class SearchController extends Controller
                 }
 
                 [$model, $ability] = $item['policy'];
-
-                return Gate::allows($ability, app("App\\Models\\$model"));
+                if($ability)
+                    return Gate::allows($ability, app("App\\Models\\$model"));
             })
             ->map(fn ($item) => [
                 'label' => $item['label'],

@@ -2,54 +2,75 @@
 @if(Auth::user()->role === 'admin')
 <style>
     #sb-topnav {
-        background-image: url("{{ asset('js/pattern.png') }}");
+        background-image: url("{{ asset('iconsandshi/pattern.png') }}");
         background-size: cover;
         background-repeat: no-repeat;
+    }
+    .navbar-icon{
+        width:36px;
+        height:36px;
+        object-fit: contain;
+        image-rendering: crips-edges;
     }
 </style>
 @endif
 @endauth
-
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" id="sb-topnav">
-    <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="/"><abbr title="inventory Management System">IMS</abbr></a>
-    <!-- Sidebar Toggle-->
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-    {{-- title --}}
-    <p class="navbar-brand ps-3">{{ $title ?? '' }}</p>
-    <!-- Navbar Search-->
-    
-    <!-- Navbar-->
-    <form action="{{ route('search') }}" id="globalSearchFrom" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-        <select id="globalSearch"
-        class="form-control"
-        style="width: 300px;">
-    </select>
+
+    <a class="navbar-brand ps-3" style="width: 200px;" href="dashboard">
+        <img src="{{asset('iconsandshi/PASAL.gif')}}" alt="icon" class="navbar-icon" width="36">
+    </a>
+
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-2" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <p class="navbar-brand ps-3 mb-0">{{ $title ?? '' }}</p>
+
+    <!-- RIGHT SIDE WRAPPER -->
+    <div class="d-flex align-items-center ms-auto">
+
+        @auth
+        <form action="{{ route('search') }}"
+        class="d-none d-md-inline-block me-3">
+        <select id="globalSearch" class="form-control" style="width: 300px;"></select>
     </form>
-<ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-    @auth
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i>
-        {{Auth::user()->email}}</a>
-        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="{{route('dashboard')}}">Dashboard</a></li>
-            <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li>
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button class="dropdown-item text-danger">Logout</button>
-                </form>
-            </li>   
-        </ul>
-    </li>
+
+    <ul class="navbar-nav me-3">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                <i class="fas fa-user fa-fw"></i>
+                <span class="d-none d-md-inline">
+                    {{ Auth::user()->email }}
+                </span>
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="{{route('dashboard')}}">Dashboard</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button class="dropdown-item text-danger">Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </li>
+    </ul>
     @endauth
-    
+
     @guest
-    <a href="{{ route('login') }}" class="nav-link">Login here</a>
+    <ul class="navbar-nav me-4">
+        <li class="nav-item">
+            <a href="{{ route('login') }}" class="nav-link">Login here</a>
+        </li>
+    </ul>
     @endguest
-</ul>
+
+</div>
 </nav>
+
+
 
 @push('scripts')
 <script>
@@ -62,7 +83,6 @@
             }
             e.preventDefault();
             
-            // 4. Open the Select2 dropdown
             const $searchSelect = $('#globalSearch');
             $searchSelect.select2('open');
             

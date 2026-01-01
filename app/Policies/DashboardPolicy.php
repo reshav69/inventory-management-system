@@ -9,7 +9,7 @@ class DashboardPolicy
 
     public function view(User $user): bool
     {
-        return in_array($user->role, ['admin', 'staff']);
+        return $user->role === 'admin' ||  $user->role === 'staff';
     }
 
     public function viewAdminWidgets(User $user): bool

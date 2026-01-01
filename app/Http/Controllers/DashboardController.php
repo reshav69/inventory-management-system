@@ -16,6 +16,7 @@ class DashboardController extends Controller
 
         $distribution = $this->warehouseStockDistribution();
         return view('dashboard.dashboard', [
+            'title'=>'Dashboard',
             'topProducts'=>$this->topProducts(),
             'salesTrend'   => $this->salesOverTime(),
             'stockHealth'=>$this->stockHealth(),

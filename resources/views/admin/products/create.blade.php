@@ -13,7 +13,7 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <x-forminputs.text type="number" name="price" label="Enter price" class="mb-md-0"/>
+                    <x-forminputs.text type="number" name="price" label="Enter price" class="mb-md-0" min=0/>
                     
                 </div>
                 
