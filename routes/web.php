@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StockTransactionController;
@@ -46,6 +47,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     
     Route::get('users/data', [UserController::class, 'data'])->name('users.data');
     Route::resource('users',UserController::class);
+
+    Route::get('/reports',[ReportController::class,'index'])->name('reports.index');
+    Route::post('/reports/generate', [ReportController::class, 'generate'])->name('reports.generate');
+
 });
 
 //both

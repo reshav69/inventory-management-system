@@ -19,10 +19,12 @@
 
         @foreach($options as $value => $text)
             <option value="{{ $value }}"
-                {{ old($name, $selected) == $value ? 'selected' : '' }}>
+                {{ old($name, $selected) === $value ? 'selected' : '' }}>
                 {{ $text }}
             </option>
         @endforeach
+
+
     </select>
 
     @error($name)
@@ -37,7 +39,13 @@
     $(document).ready(function () {
         $('#{{ $name }}').select2({
             width: '100%',
+            placeholder: '{{ $placeholder }}',
         });
+
+        if ($('#{{ $name }}').val()) {
+            $('#{{ $name }}').trigger('change');
+        }
     });
+
 </script>
 @endpush

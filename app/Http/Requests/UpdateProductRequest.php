@@ -27,7 +27,7 @@ class UpdateProductRequest extends FormRequest
                 'required',
                 'regex:/^[\pL\s]+$/u',
                 'max:50',
-                Rule::unique('products', 'name')->ignore($this->products),
+                Rule::unique('products', 'name')->ignore($this->product),
             ],
             'description' => 'nullable|string',
             'price'       => 'required|numeric|min:0',

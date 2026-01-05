@@ -75,7 +75,7 @@ class SaleController extends Controller
         $products = Product::where('status',1)->pluck('name','id');
         // $warehouses = Warehouse::where('status',1)->pluck('name','id');
 
-        return view('sales.create',['products'=>$products]);
+        return view('sales.create',['products'=>$products,'title'=>'Sell Product']);
     }
     public function store(StoreSaleRequest $request, SaleService $saleService){
         $this->authorize('create', Sale::class);

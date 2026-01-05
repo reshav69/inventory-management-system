@@ -38,7 +38,9 @@ class StoreStockTransactionRequest extends FormRequest
     public function messages()
     {
         return[
-            'to_warehouse_id.different'=>'The selected warehouse must be different than sourcewarehouse',
+            'product_id.required'=>'Choose a product',
+            'warehouse_id.required'=>'Choose a warehouse',
+            'to_warehouse_id.different'=>'The selected warehouse must be different than source warehouse',
         ];
     }
 

@@ -31,12 +31,10 @@ class StockTransferController extends Controller
 
         ]);
     }
-    public function create(){
-
-    }
 
     public function data(){
-        return DataTables::of(StockTransfer::with('product','fromWarehouse','toWarehouse'))->addIndexColumn()
+        return DataTables::of(StockTransfer::with('product','fromWarehouse','toWarehouse')->orderBy('created_at','desc'))
+        ->addIndexColumn()
         ->addColumn('action', function($row){
             return view('lookups.action', ['type'=>'stocktransfers','model' => $row])->render();
         })

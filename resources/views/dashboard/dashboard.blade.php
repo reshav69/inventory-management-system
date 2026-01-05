@@ -7,6 +7,7 @@
 <h1>Staff Dashboard</h1>
 
 @endif
+<hr>
 <p>
     THis is chart area
 </p>

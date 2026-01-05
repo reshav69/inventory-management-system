@@ -20,7 +20,6 @@
             xaxis: { 
                 categories: @json($whNames) 
             },
-            title: { text: 'Stock by Warehouse' }
         }).render();
         });
     </script>

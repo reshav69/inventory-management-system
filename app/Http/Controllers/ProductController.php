@@ -48,21 +48,22 @@ class ProductController extends Controller
         ->addIndexColumn()
         ->editColumn('quantity', function($product) {
             $qty = $product->quantity ?? 0;
+            $class = $qty == 0 ? 'text-danger fw-bold' : 'text-success fw-bold';
 
             if ($product->is_low_stock) {
-                return $qty . ' (low stock)';
+                return "<span class='{$class}'>{$qty} - Low Stock</span>";
+
             }
-            elseif ($product->is_out_of_stock())  return $qty . ' (out of stock)';
+            elseif ($product->is_out_of_stock()) 
+                return "<span class='{$class}'>{$qty} - Out of Stock</span>";
 
             return $qty;
         })
-            // ->addColumn('quantity', fn($product) => $product->quantity ?? 0)
-            // ->editColumn('quantity',fn($product)=>$product->quantity < 10 ? '(low Stock)' : '')
         ->addColumn('action', fn($row) => view('lookups.action', ['type'=>'products','model' => $row])->render())
         ->editColumn('status', fn($row) => $row->status
             ? '<span class="badge bg-success">Active</span>'
             : '<span class="badge bg-danger">Inactive</span>')
-        ->rawColumns(['status','action'])
+        ->rawColumns(['quantity','status','action'])
         ->make(true);
 
     }

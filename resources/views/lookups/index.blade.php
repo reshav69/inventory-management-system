@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="p-2 overflow-scroll card mt-3" >
-    
+
     <div class="card-header d-flex justify-content-between">
         <div>
             <i class="fas fa-table me-1"></i>
@@ -18,17 +18,17 @@
                 <a class="btn btn-success btn-sm" href="{{ route($type.'.create') }}">+ Add New</a>
             </div>
             @if (Route::has($type.'.trash'))
-                
-                <div class="d-flex justify-content-between">
-                    <a class="btn btn-warning btn-sm" href="{{ route($type.'.trash') }}">Trash</a>
-                </div>
+
+            <div class="d-flex justify-content-between">
+                <a class="btn btn-warning btn-sm" href="{{ route($type.'.trash') }}">Trash</a>
+            </div>
             @endif
         </div>
         @endif
     </div>
     
     <div class="card-body">
-        
+
         <table id="dynamic-table" class="table table-bordered table-responsive table-striped overflow-scroll mt-2 w-100">
             <thead>
                 <tr>
@@ -49,11 +49,43 @@
 @push('scripts')
 
 <script>
+    const exportoptions =[
+        {
+            extend: 'excel',
+            exportOptions: {
+                columns: ':not(.no-export)'
+            }
+        },
+        {
+            extend: 'csv',
+            exportOptions: {
+                columns: ':not(.no-export)'
+            }
+        },
+        {
+            extend: 'pdf',
+            exportOptions: {
+                columns: ':not(.no-export)'
+            }
+        },
+        {
+            extend: 'copy',
+            exportOptions: {
+                columns: ':not(.no-export)'
+            },
+        },
+        {
+            extend: 'print',
+            exportOptions: {
+                columns: ':not(:last-child)'
+            }
+        }
+    ]
     $(document).ready(function() {
         var table = $('#dynamic-table').DataTable({
-            scrollX: true,
             processing: true,
             serverSide: true,
+            responsive:true,
             ajax: '{{ $dataUrl }}',
             xhrFields: {
                 withCredentials: true
@@ -71,10 +103,10 @@
                 { data: 'action', orderable: false, searchable: false },
             ],
             columnDefs: [
-                { width: "fit", targets: -1 }
+                { width: "15%", targets: -1 ,className: 'no-export'}
             ],
             buttons: [
-                'copy', 'excel', 'csv', 'pdf', 'print'
+                ...exportoptions
             ],
 
         });

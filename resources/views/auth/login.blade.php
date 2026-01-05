@@ -1,4 +1,4 @@
-@extends('includes.layout')
+@extends('includes.welayout')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -14,9 +14,8 @@
                         <div class="form-floating mb-3">
                             <x-forminputs.text type="password" autocomplete="on" name="password" label="Enter password"/>
                         </div>
-
-                        <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                            {{-- <a class="small" href="password.html">Forgot Password?</a> --}}
+                        <hr>
+                        <div class="d-flex align-items-center justify-content-between">
                             <button class="btn btn-primary">Login</button>
                         </div>
                     </form>
@@ -28,6 +27,4 @@
 
         </div>
     </div>
-
-
     @endsection

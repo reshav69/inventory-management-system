@@ -35,6 +35,8 @@
         </div>
         
         {{-- customer --}}
+        <hr>
+        <i class="card p-1 mb-3">***optional data***</i>
         <div class="row mb-3">
             <div class="col-md-4">
                 <x-forminputs.text type="text" name="customer_full_name" label="Customer Full Name" class="mb-md-0"/>

@@ -38,16 +38,21 @@
 @push('scripts')
 
 <script>
-    $(document).ready(function() {
+        $(document).ready(function() {
         var table = $('#trash-table').DataTable({
-            scrollX: true,
             processing: true,
             serverSide: true,
+            responsive:true,
             ajax: '{{ $dataUrl }}',
-            dom: 'Blfrtip',
-            order: [[0, 'asc']],
             xhrFields: {
                 withCredentials: true
+            },
+            layout:{
+                topStart: 'pageLength',
+                top:'buttons',
+                topEnd: 'search',
+                bottomStart: 'info',
+                bottomEnd: 'paging',
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: 'false', orderable: 'false' },
@@ -55,16 +60,16 @@
                 { data: 'action', orderable: false, searchable: false },
             ],
             columnDefs: [
-                { width: "fit", targets: -1 }
+                { width: "fit-content", targets: -1 }
             ],
             buttons: [
-
                 'copy', 'excel', 'csv', 'pdf', 'print'
             ],
 
         });
         table.buttons().container().appendTo('#export-buttons');
     });
+    
 </script>
 
 @endpush

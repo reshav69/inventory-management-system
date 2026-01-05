@@ -11,7 +11,7 @@ return [
         'label' => 'View Products',
         'route' => 'products.index',
         'policy' => ['Product', 'viewAny'],
-        'keywords' => ['product', 'list', 'view','see'],
+        'keywords' => ['product', 'list', 'view','see','chart'],
     ],
     // --
     [
@@ -73,17 +73,16 @@ return [
         'keywords' => ['sales','sell', 'view', 'see','list'],
     ],
     [
-
         'label' => 'Add Sales',
         'route' => 'sales.create',
         'policy' => ['Sale', 'create'],
         'keywords' => ['sales','sell', 'add', 'create'],
     ],
     //////
-    
     [
         'label' => 'Dashboard',
         'route' => 'dashboard',
+        'policy'=>['Product','viewAny'],
         'keywords' => ['dashboard', 'charts'],
     ]
 ];

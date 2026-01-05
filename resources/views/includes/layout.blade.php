@@ -10,6 +10,9 @@
         .cke_notification_warning {
             display: none !important;
         }
+        .cooler{
+            background-color:#E7EeEe;
+        }
     </style>
     @include('includes.cssin')
 </head>
@@ -20,12 +23,12 @@
     <div id="layoutSidenav">
 
         <div id="layoutSidenav_nav">
-        @include('includes.sidebar')
+            @include('includes.sidebar')
         </div>
-        <div id="layoutSidenav_content">
+        <div class="cooler" id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    
+
                     @yield('content')
                 </div>
             </main>
@@ -36,19 +39,19 @@
     
     @include('includes.scriptsin')
     <script type="text/javascript">
-        window.onload = function() {
+        document.addEventListener('DOMContentLoaded', function() {
             var mainInput = document.getElementById("nepali-datepicker");
-            if(mainInput){
-            mainInput.NepaliDatePicker({
-                'mode':'dark',
-                'disableDaysAfter':1,
-                'animation':'slide',
-            });
-            todayFullDate= NepaliFunctions.BS.GetCurrentDate('YYYY-MM-DD');
-            mainInput.value = todayFullDate;
-            
-            // console.log(NepaliFunctions.BS.GetCurrentDate());
-        };}
+            if (mainInput) {
+                mainInput.NepaliDatePicker({
+                    'mode': 'dark',
+                    'disableDaysAfter': 1,
+                    'animation': 'slide',
+                });
+                var todayFullDate = NepaliFunctions.BS.GetCurrentDate('YYYY-MM-DD');
+                mainInput.value = todayFullDate;
+            }
+        });
+
     </script>
     
     @if(session('success'))

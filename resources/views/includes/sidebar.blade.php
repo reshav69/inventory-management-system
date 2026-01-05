@@ -32,6 +32,8 @@
             @if(Auth::user()->role === 'admin')
             <div class="sb-sidenav-menu-heading">Management</div>
             <x-sidebars.collapser title="Users" name="Users" route="users" icon="user" :canCreate="true" model="\App\Models\User"/>
+            <div class="sb-sidenav-menu-heading">Management</div>
+            <x-sidebars.collapser title="Reports" name="Reports" route="reports" icon="file"/>
             @endif
 
 

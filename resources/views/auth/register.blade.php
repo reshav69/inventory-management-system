@@ -1,4 +1,4 @@
-@extends('includes.layout')
+@extends('includes.welayout')
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
@@ -27,6 +27,7 @@
 
 							</div>
 
+							<hr>
 						<button type="submit" class="btn btn-primary">Register</button>
 
 					</form>

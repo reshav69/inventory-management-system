@@ -17,8 +17,8 @@
 @endauth
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark" id="sb-topnav">
 
-    <a class="navbar-brand ps-3" style="width: 200px;" href="dashboard">
-        <img src="{{asset('iconsandshi/PASAL.gif')}}" alt="icon" class="navbar-icon" width="36">
+    <a class="navbar-brand ps-3" style="width: 200px;" href="{{route('dashboard')}}">
+        <img src="{{asset('iconsandshi/PASAL.gif')}}" alt="icon" class="navbar-icon" width="36"> IMS
     </a>
 
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-2" id="sidebarToggle">
@@ -95,7 +95,7 @@
     
     $(function () {
         $('#globalSearch').select2({
-            placeholder: 'Search for...',
+            placeholder: 'Search for pages here',
             minimumInputLength: 2,
             ajax: {
                 url: "{{ route('search') }}",

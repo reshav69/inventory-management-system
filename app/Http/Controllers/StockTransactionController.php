@@ -42,12 +42,25 @@ class StockTransactionController extends Controller
         ->addColumn('warehouse', function ($row) {
             return $row->warehouse ? $row->warehouse->name : '-';
         })
+        ->editColumn('quantity', function ($row) {
+            $class = $row->quantity < 0 ? 'text-danger fw-bold' : 'text-success fw-bold';
+            return "<span class='{$class}'>{$row->quantity}</span>";
+        })
+        ->editColumn('transaction_type', function ($row) {
+            return match ($row->transaction_type) {
+                'incoming' => '<span class="badge bg-success">Incoming</span>',
+                'sale'     => '<span class="badge bg-danger">Sale</span>',
+                'transfer' => '<span class="badge bg-warning">Transfer</span>',
+                default    => '<span class="badge bg-secondary">Unknown</span>',
+            };
+        })
+
         ->addColumn('action', function($row){
             return view('lookups.action', ['type'=>'stocktransactions','model' => $row])->render();
         })
         ->editColumn('status', fn($row) => $row->status? '<span class="badge bg-success">Active</span>' :
-             '<span class="badge bg-danger">Inactive</span>')
-        ->rawColumns(['status','action'])
+         '<span class="badge bg-danger">Inactive</span>')
+        ->rawColumns(['quantity','transaction_type','status','action'])
         ->make(true);
     }
 
@@ -82,7 +95,7 @@ class StockTransactionController extends Controller
             // StockTransaction::create($data);
             return back()->with('success','Added successfully');
         } catch (\Throwable $th) {
-            
+
             return back()->withErrors(['db_error'=>'Something went wrong'])->withInput();
             // return back()->withErrors(['db_error'=>$th->getMessage()]);
         }
